@@ -1,8 +1,7 @@
-# Toolchain: Coreutils 8.31
-# Source: http://ftp.gnu.org/gnu/coreutils/coreutils-8.31.tar.xz
-# Build and install as mlfs
+# tc:		coreutils 8.31
+# sauce:	http://ftp.gnu.org/gnu/coreutils/coreutils-8.31.tar.xz
 
-# Set the environment for cross-compiling if not done already.
+# 0
 export CC="${MLFS_TARGET}-gcc"
 export CXX="${MLFS_TARGET}-g++"
 export AR="${MLFS_TARGET}-ar"
@@ -11,16 +10,14 @@ export RANLIB="${MLFS_TARGET}-ranlib"
 export LD="${MLFS_TARGET}-ld"
 export STRIP="${MLFS_TARGET}-strip"
 
-# Re-create configure script
+# 1
 autoreconf -vif
 
-# Fix a issue related to non-glibc builds
-patch -Np1 -i ../patches/coreutils-8.31-fix-strtod.patch
+# 2 >> fix an issue related to non-glibc builds
+patch -Np1 -i "${patchdir}"/coreutils-8.31/coreutils-8.31-fix-strtod.patch
 
-# Cross Compiling the configure script 
-# does not does not determine the correct 
-# values for the following, Set the values 
-# manually: 
+# 3 >> cross-compiling the configure script does not determine the correct
+# values, set them manually with:
 cat > config.cache << EOF
 fu_cv_sys_stat_statfs2_bsize=no
 ac_cv_func_syncfs=no
@@ -28,15 +25,16 @@ gl_cv_func_working_mkstemp=yes
 gl_cv_func_working_acl_get_file=yes
 EOF
 
-# Suppress a test which on some machines can loop forever:
+# 4 >> suppress a test that can cause some machines to loop forever
 sed -i '/test.lock/s/^/#/' gnulib-tests/gnulib.mk
 
-# Configure source
-./configure --build=${MLFS_HOST} \
-            --host=${MLFS_TARGET} \
-            --prefix=/tools \
-            --enable-install-program=hostname \
-            --cache-file=config.cache 
+# 5
+./configure \
+	--build=${MLFS_HOST}			\
+	--host=${MLFS_TARGET}			\
+	--prefix=/tools				\
+	--enable-install-program=hostname	\
+	--cache-file=config.cache 
 
-# Build and install to toolchain
+# 6
 make && make install
