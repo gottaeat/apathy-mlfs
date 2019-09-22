@@ -1,9 +1,7 @@
-# Toolchain: DejaGNU-1.6.2
-# Source: http://ftp.gnu.org/gnu/dejagnu/dejagnu-1.6.2.tar.gz
-# Build and install as mlfs
-# Can be optional: Package used for testing final system packages
+# tc:		dejagnu-1.6.2
+# sauce:	http://ftp.gnu.org/gnu/dejagnu/dejagnu-1.6.2.tar.gz
 
-# Set the environment for cross-compiling if not done already.
+# 0
 export CC="${MLFS_TARGET}-gcc"
 export CXX="${MLFS_TARGET}-g++"
 export AR="${MLFS_TARGET}-ar"
@@ -12,10 +10,11 @@ export RANLIB="${MLFS_TARGET}-ranlib"
 export LD="${MLFS_TARGET}-ld"
 export STRIP="${MLFS_TARGET}-strip"
 
-# Configure source
-./configure --build=${MLFS_HOST} \
-            --host=${MLFS_TARGET} \
-            --prefix=/tools
+# 1
+./configure \
+	--build=${MLFS_HOST}	\
+	--host=${MLFS_TARGET}	\
+	--prefix=/tools
 
-# Build and install to toolchain
+# 2
 make && make install
