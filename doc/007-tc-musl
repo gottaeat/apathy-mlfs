@@ -1,27 +1,14 @@
-# Tool Chain: Musl
-# Build and install as mlfs
+# tc:		musl-1.1.23
 
-# Configure 
+# 1
 ./configure \
-  CROSS_COMPILE=${MLFS_TARGET}- \
-  --prefix=/ \
-  --target=${MLFS_TARGET}
+	CROSS_COMPILE=${MLFS_TARGET}- \
+	--prefix=/ \
+	--target=${MLFS_TARGET}
 
-# Build and install 
+# 2
 make && make DESTDIR=/tools install
 
-# Make sure symlink is valid: 
-# /tools/lib/ld-musl-$ARCH.so.1 to /tools/lib/libc.so
-
-case $(uname -m) in
-  x86_64)  rm -v  /tools/lib/ld-musl-x86_64.so.1
-           ln -sv libc.so /tools/lib/ld-musl-x86_64.so.1
-           ;;
-  i686)    rm -v  /tools/lib/ld-musl-i686.so.1
-           ln -sv libc.so /tools/lib/ld-musl-i686.so.1
-           ;;
-  arm*)    rm -v  /tools/lib/ld-musl-arm.so.1
-           ln -sv libc.so /tools/lib/ld-musl-arm.so.1
-           ;;
-esac
-
+# 3 >> make sure /tools/lib/ld-musl-x86_64.so.1 points to /tools/lib/libc.so
+rm -v  /tools/lib/ld-musl-x86_64.so.1
+ln -sv libc.so /tools/lib/ld-musl-x86_64.so.1
