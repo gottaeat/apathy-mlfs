@@ -1,5 +1,5 @@
-# ct:		gcc-9.1.0 final
-# sauce:	http://ftp.gnu.org/gnu/gcc/gcc-9.1.0/gcc-9.1.0.tar.xz
+# ct:		gcc-9.2.0 final
+# sauce:	http://ftp.gnu.org/gnu/gcc/gcc-9.2.0/gcc-9.2.0.tar.xz
 
 # 1
 tar -xf "${saucedir}"/mpfr-4.0.2.tar.xz	&& mv -v mpfr-4.0.2 mpfr
@@ -7,14 +7,19 @@ tar -xf "${saucedir}"/gmp-6.1.2.tar.xz	&& mv -v gmp-6.1.2 gmp
 tar -xf "${saucedir}"/mpc-1.1.0.tar.gz	&& mv -v mpc-1.1.0 mpc
 
 # 2
-patch -Np0 -i "${patchdir}"/gcc-9.1.0/0010-ldbl128-config.patch
-patch -Np0 -i "${patchdir}"/gcc-9.1.0/ada-shared.patch
-patch -Np0 -i "${patchdir}"/gcc-9.1.0/fix-cxxflags-passing.patch
-patch -Np0 -i "${patchdir}"/gcc-9.1.0/fix-musl-execinfo.patch
-patch -Np0 -i "${patchdir}"/gcc-9.1.0/libgcc-musl-ldbl128-config.patch
-patch -Np0 -i "${patchdir}"/gcc-9.1.0/musl-ada.patch
-patch -Np0 -i "${patchdir}"/gcc-9.1.0/no-stack_chk_fail_local.patch
-patch -Np0 -i "${patchdir}"/gcc-9.1.0/non-nullness.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/0010-ldbl128-config.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/ada-shared.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/darn.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/fix-cxxflags-passing.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/fix-musl-execinfo.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/gccgo-musl.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/invalid_tls_model.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/libffi_gnulinux.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/libgcc-musl-ldbl128-config.patch
+patch -Np1 -i "${patchdir}"/gcc-9.2.0/libgnarl-musl.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/musl-ada.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/no-stack_chk_fail_local.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/ppc64-pure64.patch
 
 # 3
 sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64
