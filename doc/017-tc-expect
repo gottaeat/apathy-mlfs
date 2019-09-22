@@ -1,10 +1,7 @@
-# Toolchain: Expect-5.45.3
-# Source: https://sourceforge.net/projects/expect/files/Expect/5.45.3/expect5.45.3.tar.gz
-# Build and install as mlfs
-# Can be optional: Package used for testing final system packages
-# *No need to use latest version, so far. If so, patches need updating.*
+# tc:		Expect-5.45.3
+# source	https://prdownloads.sourceforge.net/expect/expect5.45.3.tar.gz
 
-# Set the environment for cross-compiling if not done already.
+# 0
 export CC="${MLFS_TARGET}-gcc"
 export CXX="${MLFS_TARGET}-g++"
 export AR="${MLFS_TARGET}-ar"
@@ -13,23 +10,25 @@ export RANLIB="${MLFS_TARGET}-ranlib"
 export LD="${MLFS_TARGET}-ld"
 export STRIP="${MLFS_TARGET}-strip"
 
-# Patch source to run with musl libc
-patch -Np1 -i ../patches/expect-5.45.3-dont-put-toolchain-in-libpath.patch
-patch -Np1 -i ../patches/expect-5.45.3-dont-configure-testsuites.patch
-patch -Np1 -i ../patches/expect-5.45.3-allow-cross-compile.patch
+# 1 >> patch tp allow cross compile
+patch -Np1 -i "${patchdir}"/expect-5.45.3/expect-5.45.3-dont-put-toolchain-in-libpath.patch
+patch -Np1 -i "${patchdir}"/expect-5.45.3/expect-5.45.3-dont-configure-testsuites.patch
+patch -Np1 -i "${patchdir}"/expect-5.45.3/expect-5.45.3-allow-cross-compile.patch
 
-# Update files to support Musl Libc for configure
-cp -v ../files/config.guess-musl tclconfig/config.guess
-cp -v ../files/config.sub-musl tclconfig/config.sub
+# 2 >> make configure see the musl-linux triplet
+cp -v ${filesdir}/config.sub-musl tclconfig/config.sub
+cp -v ${filesdir}/config.guess-musl tclconfig/config.guess
+
 cp -v configure{,.orig}
 sed 's:/usr/local/bin:/bin:' configure.orig > configure
 
-# Configure source
-./configure --build=${MLFS_HOST} \
-            --host=${MLFS_TARGET} \
-            --prefix=/tools \
-            --with-tcl=/tools/lib \
-            --with-tclinclude=/tools/include
+# 3
+./configure	\
+	--build=${MLFS_HOST}	\
+	--host=${MLFS_TARGET}	\
+	--prefix=/tools		\
+	--with-tcl=/tools/lib	\
+	--with-tclinclude=/tools/include
 
-# Build and install to toolchain
+# 4
 make && make SCRIPTS="" install
