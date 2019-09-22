@@ -1,8 +1,7 @@
-# ToolChain: Bzip2 1.0.6
-# Source: http://anduin.linuxfromscratch.org/LFS/bzip2-1.0.6.tar.gz
-# Build and install as mlfs
+# tc:		bzip2-1.0.8
+# sauce:	https://www.sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
 
-# Set the environment for cross-compiling if not done already.
+# 0
 export CC="${MLFS_TARGET}-gcc"
 export CXX="${MLFS_TARGET}-g++"
 export AR="${MLFS_TARGET}-ar"
@@ -11,20 +10,19 @@ export RANLIB="${MLFS_TARGET}-ranlib"
 export LD="${MLFS_TARGET}-ld"
 export STRIP="${MLFS_TARGET}-strip"
 
-# Fix the Makefiles for  ensures installation of symbolic 
-# links are relative and the man pages are installed into 
-# the correct location:
+# 1 >> fix the makefiles, ensures installation of symbolic links are
+# relative and the man pages are installed into the correct location.
 cp Makefile{,.orig}
 sed -e "/^all:/s/ test//" Makefile.orig > Makefile
 sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
 sed -i "s@(PREFIX)/man@(PREFIX)/share/man@g" Makefile
 
-# Prepare source
+# 2
 make -f Makefile-libbz2_so CC="${CC}" AR="${AR}" RANLIB="${RANLIB}"
 make clean
 
-# Build
+# 3
 make CC="${CC}" AR="${AR}" RANLIB="${RANLIB}"
 
-# Install to tool chain
+# 4
 make PREFIX=/tools install
