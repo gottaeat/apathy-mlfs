@@ -1,0 +1,12 @@
+# fs:		sysvinit-2.96
+# sauce:	http://download.savannah.gnu.org/releases/sysvinit/sysvinit-2.96.tar.xz
+#		http://www.linuxfromscratch.org/patches/lfs/development/sysvinit-2.96-consolidated-1.patch
+
+# 1
+patch -Np1 -i ../sysvinit-2.96-consolidated-1.patch
+
+# 2
+make
+
+# 3
+make install
