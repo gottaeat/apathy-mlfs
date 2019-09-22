@@ -25,8 +25,8 @@ useradd -s /bin/yash -g mlfs -m -k /dev/null mlfs
 passwd mlfs
 
 chown -v  mlfs $MLFS/cross-tools
-chown -vR mlfs $MLFS/sources
-chmod -v  a+wt $MLFS/sources
+chown -vR mlfs $MLFS/mss
+chmod -v  a+wt $MLFS/mss
 chown -v  mlfs $MLFS/tools
 
 # now run as mlfs user.
