@@ -1,8 +1,7 @@
-# Toolchain: Findutils - 4.6.0
-# Source: http://ftp.gnu.org/gnu/findutils/findutils-4.6.0.tar.gz
-# Build and install as mlfs
+# tc:		findutils-4.7.0
+# sauce:	http://ftp.gnu.org/gnu/findutils/findutils-4.7.0.tar.xz
 
-# Set the environment for cross-compiling if not done already.
+# 0
 export CC="${MLFS_TARGET}-gcc"
 export CXX="${MLFS_TARGET}-g++"
 export AR="${MLFS_TARGET}-ar"
@@ -11,14 +10,16 @@ export RANLIB="${MLFS_TARGET}-ranlib"
 export LD="${MLFS_TARGET}-ld"
 export STRIP="${MLFS_TARGET}-strip"
 
+# 1
 sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' gl/lib/*.c
 sed -i '/unistd/a #include <sys/sysmacros.h>' gl/lib/mountlist.c
 echo "#define _IO_IN_BACKUP 0x100" >> gl/lib/stdio-impl.h
 
-# Configure source
-./configure --build=${MLFS_HOST} \
-            --host=${MLFS_TARGET} \
-            --prefix=/tools
+# 2
+./configure \
+	--build=${MLFS_HOST}	\
+	--host=${MLFS_TARGET}	\
+	--prefix=/tools
 
-# Build and install to toolchain
+# 3
 make && make install
