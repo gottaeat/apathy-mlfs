@@ -12,16 +12,20 @@ ln -sv   $MLFS/tools /
 
 # create the patch, source and table directories
 export patchdir="${MLFS}/mss/work/patches"
+export saucedir="${MLFS}/mss/work/sources"
+export filesdir="${MLFS}/mss/work/files"
+
 mkdir -pv "${patchdir}"
-mkdir -pv $MLFS/mss/work/files
+mkdir -pv "${saucedir}"
+mkdir -pv "${filesdir}"
+
 mkdir -pv $MLFS/mss/work/table
-mkdir -pv $MLFS/mss/work/sources
 
 # i >>instead of creating these dirs, you can also symlink
 # the files, patches and sources files from the cloned repo.
 
 # download the sources
-cd $MLFS/mss/work/sources
+cd "${saucedir}"
 wget -i /path/to/wget-list
 
 # create user and group, change ownership to allow installation of tools
@@ -57,6 +61,8 @@ case $- in (*m*) trap - TSTP TTIN TTOU; esac
 
 export MLFS=/mnt/mlfs
 export patchdir="${MLFS}/mss/work/patches"
+export saucedir="${MLFS}/mss/work/sources"
+export filesdir="${MLFS}/mss/work/files"
 
 export LC_ALL=POSIX
 export PATH=/cross-tools/bin:/tools/bin:/bin:/usr/bin
