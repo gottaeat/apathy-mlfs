@@ -1,14 +1,15 @@
 ## apathy-mlfs
-this project is a fork of `dslm4515/Musl-LFS` which uses the `linux from scratch` as its base and replaces `openssl` with `libressl` and `sysvinit`,`sysklogd` with `s6`.
-
-#### differences between mlfs and apathy-mlfs
- * no `bash`, replaced with `yash`.
- * uses the traditional `sysvinit` and `sysklogd` instead of the `s6` utilities, with my own posixly correct init scripts.
- * no `porg`, package management is done by hand.
- * kernel, headers and firmware are all deblobbed using the `linux-libre` patchset.
- * additional recipe for a statically linked `busybox-1.31.0` binary, `/bin/sh` is linked to `/bin/busybox`.
+apathy-mlfs aims to provide instructions for building a small musl libc using linux install. features as of the time of writing the README are:
+ * musl libc 1.1.23
+ * libressl 2.9.2
+ * gcc 9.2.0 (c,c++)
+ * sysvinit-2.96 + sysklogd 1.5.1 (w/ posixly correct self-written init scripts)
+ * yash 2.48
+ * busybox 1.31.0 (for ash at /bin/sh and recovery purposes.)(statically linked, defconfig.)
+ * libre kernel, headers and firmware.
 
 #### used sources
+*this project is a fork of `dslm4515/Musl-LFS` with moderate changes, rewrites, difference in software of choices and updated packages/patches.*
  * http://www.linuxfromscratch.org
  * https://github.org/dslm4545/Musl-LFS
  * https://voidlinux.org
