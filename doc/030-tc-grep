@@ -1,8 +1,7 @@
-# Toolchain: Grep 3.3
-# Source: http://ftp.gnu.org/gnu/grep/grep-3.3.tar.xz
-# Build and install as mlfs
+# tc:		grep-3.3
+# sauce:	http://ftp.gnu.org/gnu/grep/grep-3.3.tar.xz
 
-# Set the environment for cross-compiling if not done already.
+# 0
 export CC="${MLFS_TARGET}-gcc"
 export CXX="${MLFS_TARGET}-g++"
 export AR="${MLFS_TARGET}-ar"
@@ -11,10 +10,11 @@ export RANLIB="${MLFS_TARGET}-ranlib"
 export LD="${MLFS_TARGET}-ld"
 export STRIP="${MLFS_TARGET}-strip"
 
-# Configure source
-./configure --build=${MLFS_HOST} \
-            --host=${MLFS_TARGET} \
-            --prefix=/tools
+# 1
+./configure \
+	--build=${MLFS_HOST}	\
+	--host=${MLFS_TARGET}	\
+	--prefix=/tools
 
-# Install to toolchain
+# 2
 make && make install
