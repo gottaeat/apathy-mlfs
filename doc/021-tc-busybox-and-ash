@@ -1,0 +1,22 @@
+# tc:		busybox-1.31.0
+# sauce:	https://busybox.net/downloads/busybox-1.31.0.tar.bz2
+
+# 0
+export CC="${MLFS_TARGET}-gcc"
+export CXX="${MLFS_TARGET}-g++"
+export AR="${MLFS_TARGET}-ar"
+export AS="${MLFS_TARGET}-as"
+export RANLIB="${MLFS_TARGET}-ranlib"
+export LD="${MLFS_TARGET}-ld"
+export STRIP="${MLFS_TARGET}-strip"
+
+# 1
+make defconfig
+make clean
+
+# 2 
+make LDFLAGS=-static
+cp busybox /tools/bin/
+
+# 3 >> set ash as /bin/sh
+ln -sv busybox /tools/bin/sh
