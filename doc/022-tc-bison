@@ -1,8 +1,7 @@
-# Toolchain: Bison 3.4.1
-# Source: http://ftp.gnu.org/gnu/bison/bison-3.4.1.tar.xz
-# Build and install as mlfs
+# tc:		bison-3.4.2
+# sauce:	http://ftp.gnu.org/gnu/bison/bison-3.4.2.tar.xz
 
-# Set the environment for cross-compiling if not done already.
+# 0
 export CC="${MLFS_TARGET}-gcc"
 export CXX="${MLFS_TARGET}-g++"
 export AR="${MLFS_TARGET}-ar"
@@ -11,10 +10,11 @@ export RANLIB="${MLFS_TARGET}-ranlib"
 export LD="${MLFS_TARGET}-ld"
 export STRIP="${MLFS_TARGET}-strip"
 
-# Configure source
-./configure --build=${MLFS_HOST} \
-            --host=${MLFS_TARGET} \
-            --prefix=/tools
+# 1
+./configure \
+	--build=${MLFS_HOST}	\
+	--host=${MLFS_TARGET}	\
+	--prefix=/tools
 
-# Build and install to toolchain
+# 2
 make && make install
