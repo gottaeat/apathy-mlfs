@@ -1,25 +1,24 @@
-# Cross-Tools: Binutils
-# Build and install as mlfs
-# source: http://ftp.gnu.org/gnu/binutils/binutils-2.32.tar.xz
+# ct:		binutils-2.32
+# source:	http://ftp.gnu.org/gnu/binutils/binutils-2.32.tar.xz
 
-# Create build directory in-tree
+# 1
 mkdir -v build && cd build
 
-# configure source
-../configure \
-   --prefix=/cross-tools \
-   --target=${MLFS_TARGET} \
-   --with-sysroot=/cross-tools/${MLFS_TARGET} \
-   --disable-nls \
-   --disable-multilib \
-   --disable-werror \
-   --disable-ppl-version-check \
-   --disable-cloog-version-check \
-   --enable-deterministic-archives \
-   --disable-compressed-debug-sections 
+# 2
+../configure	\
+	--prefix=/cross-tools				\
+	--target=${MLFS_TARGET}				\
+	--with-sysroot=/cross-tools/${MLFS_TARGET}	\
+	--disable-nls					\
+	--disable-multilib				\
+	--disable-werror				\
+	--disable-ppl-version-check			\
+	--disable-cloog-version-check			\
+	--enable-deterministic-archives			\
+	--disable-compressed-debug-sections 
 
-# build to check host can build
+# 3
 make configure-host
 
-# Build and install
+# 4
 make && make install
