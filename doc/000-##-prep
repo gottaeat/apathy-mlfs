@@ -13,11 +13,16 @@ ln -sv   $MLFS/tools /
 # create the patch, source and table directories
 export patchdir="${MLFS}/mss/work/patches"
 mkdir -pv "${patchdir}"
+mkdir -pv $MLFS/mss/work/files
 mkdir -pv $MLFS/mss/work/table
 mkdir -pv $MLFS/mss/work/sources
 
+# i >>instead of creating these dirs, you can also symlink
+# the files, patches and sources files from the cloned repo.
+
 # download the sources
-wget -i sources.list
+cd $MLFS/mss/work/sources
+wget -i /path/to/wget-list
 
 # create user and group, change ownership to allow installation of tools
 groupadd mlfs
