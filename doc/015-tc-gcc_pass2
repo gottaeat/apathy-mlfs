@@ -1,8 +1,6 @@
-# Tool Chain: GCC-9.1.0 PASS 2 of 2
-# Source: http://ftp.gnu.org/gnu/gcc/gcc-9.1.0/gcc-9.1.0.tar.xz
-# Build and install as mlfs
+# tc:		gcc 9.2.0 - pass 2
 
-# Set the environment for cross-compiling if not done already.
+# 0
 export CC="${MLFS_TARGET}-gcc"
 export CXX="${MLFS_TARGET}-g++"
 export AR="${MLFS_TARGET}-ar"
@@ -11,37 +9,37 @@ export RANLIB="${MLFS_TARGET}-ranlib"
 export LD="${MLFS_TARGET}-ld"
 export STRIP="${MLFS_TARGET}-strip"
 
-# Additional sources to add
-tar -xf ../mpfr-4.0.2.tar.xz
-mv -v mpfr-4.0.2 mpfr
-tar -xf ../gmp-6.1.2.tar.xz
-mv -v gmp-6.1.2 gmp
-tar -xf ../mpc-1.1.0.tar.gz
-mv -v mpc-1.1.0 mpc
+# 1
+tar -xf "${saucedir}"/mpfr-4.0.2.tar.xz	&& mv -v mpfr-4.0.2 mpfr
+tar -xf "${saucedir}"/gmp-6.1.2.tar.xz	&& mv -v gmp-6.1.2 gmp
+tar -xf "${saucedir}"/mpc-1.1.0.tar.gz	&& mv -v mpc-1.1.0 mpc
 
-# Apply patches [from void-linux]
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/0010-ldbl128-config.patch
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/ada-shared.patch
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/fix-cxxflags-passing.patch
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/fix-musl-execinfo.patch
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/libgcc-musl-ldbl128-config.patch
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/musl-ada.patch
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/no-stack_chk_fail_local.patch
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/non-nullness.patch
+# 2
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/0010-ldbl128-config.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/ada-shared.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/darn.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/fix-cxxflags-passing.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/fix-musl-execinfo.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/gccgo-musl.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/invalid_tls_model.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/libffi_gnulinux.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/libgcc-musl-ldbl128-config.patch
+patch -Np1 -i "${patchdir}"/gcc-9.2.0/libgnarl-musl.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/musl-ada.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/no-stack_chk_fail_local.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/ppc64-pure64.patch
 
-# Create a full version of the internal header using a command that is 
-# identical to what the GCC build system does in normal circumstances: 
+
+# 3 >> create a full version of the internal header using a command that is
+#identical to what the gcc build system creates in normal circumstances with:
 cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
-  `dirname $($MLFS_TARGET-gcc -print-libgcc-file-name)`/include-fixed/limits.h
- 
-# Change the location of GCC's default dynamic linker to use the one installed in /tool
-#
-# For x86_64/i686:
+ $(dirname $($MLFS_TARGET-gcc -print-libgcc-file-name))/include-fixed/limits.h
+
+# 4 >> change the location of gcc's default dynamic linker to use the one installed in /tools
 for file in gcc/config/{linux,i386/linux{,64}}.h
 do
-  cp -uv $file{,.orig}
-  sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
-      -e 's@/usr@/tools@g' $file.orig > $file
+ cp -uv $file{,.orig}
+ sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' -e 's@/usr@/tools@g' $file.orig > $file
   echo '
 #undef STANDARD_STARTFILE_PREFIX_1
 #undef STANDARD_STARTFILE_PREFIX_2
@@ -50,66 +48,48 @@ do
   touch $file.orig
 done
 
-# For ARM:
-for file in gcc/config/arm/linux-eabi.h
-do
-  cp -uv $file{,.orig}
-  sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
-      -e 's@/usr@/tools@g' $file.orig > $file
-  echo '
-#undef STANDARD_STARTFILE_PREFIX_1
-#undef STANDARD_STARTFILE_PREFIX_2
-#define STANDARD_STARTFILE_PREFIX_1 "/tools/lib/"
-#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file
-  touch $file.orig
-done
+# 5
+sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64
 
-# Configure source
+# 6
 mkdir -v build && cd build
-../configure                                       \
-    --target=${MLFS_TARGET}    \
-    --build=${MLFS_HOST}       \
-    --host=${MLFS_TARGET}      \
-    --prefix=/tools                                \
-    --with-local-prefix=/tools                     \
-    --with-native-system-header-dir=/tools/include \
-    --enable-languages=c,c++                       \
-    --disable-libstdcxx-pch                        \
-    --disable-multilib                             \
-    --disable-bootstrap                            \
-    --disable-libgomp \
-    --disable-libmpx                               \
-    --disable-libquadmath                          \
-    --disable-libssp                               \
-    --disable-libvtv                               \
-    --disable-symvers \
-    --disable-libitm \
-    --disable-gnu-indirect-function \
-    --disable-libmudflap \
-    --disable-libsanitizer \
-    --disable-libcilkrts
+../configure	\
+	--target=${MLFS_TARGET}				\
+	--build=${MLFS_HOST}				\
+	--host=${MLFS_TARGET}				\
+	--prefix=/tools					\
+	--with-local-prefix=/tools			\
+	--with-native-system-header-dir=/tools/include	\
+	--enable-languages=c,c++			\
+	--disable-libstdcxx-pch				\
+	--disable-multilib				\
+	--disable-bootstrap				\
+	--disable-libgomp				\
+	--disable-libmpx				\
+	--disable-libquadmath				\
+	--disable-libssp				\
+	--disable-libvtv				\
+	--disable-symvers				\
+	--disable-libitm				\
+	--disable-gnu-indirect-function			\
+	--disable-libmudflap				\
+	--disable-libsanitizer				\
+	--disable-libcilkrts
 
-# Build and install to toolchain
+# 7
 PATH=/bin:/usr/bin:/cross-tools/bin:/tools/bin make 
 make install
 
-# Add compatibility
+# 8
 ln -sv gcc /tools/bin/cc
 
-# OPTIONAL: Test
-# Check basic functions (compiling and linking) of the new toolchain are working as 
-# expected. To perform a sanity check, run the following commands: 
+# 9 >> sanity check
 echo 'int main(){}' > dummy.c
 cc dummy.c
 readelf -l a.out | grep ': /tools'
 
-# If everything is working correctly, there should be no errors, and the output of 
-# the last command will be of the form: 
-# [Requesting program interpreter: /tools/lib/ld-musl-i386.so.1]
-# or
+# i >> output should be:
 # [Requesting program interpreter: /tools/lib/ld-musl-x86_64.so.1]
-# or
-# [Requesting program interpreter: /tools/lib/ld-musl-arm.so.1]
 
-# Clean up after testing
-rm -v dummy.c a.out
+# 10 >> remove the sanity check files.
+rm -v a.out dummy.c
