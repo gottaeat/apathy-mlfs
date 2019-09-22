@@ -8,7 +8,7 @@
 	--target=${MLFS_TARGET} 
 
 # 2
-make && DESTDIR=/cross-tools make install
+make && make DESTDIR=/cross-tools install
 
 # 3 >> add missing directory and link
 mkdir -v /cross-tools/usr
