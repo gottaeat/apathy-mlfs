@@ -1,5 +1,5 @@
-# ct:		gcc-9.1.0 static
-# sauce:	http://ftp.gnu.org/gnu/gcc/gcc-9.1.0/gcc-9.1.0.tar.xz
+# ct:		gcc-9.2.0 static
+# sauce:	http://ftp.gnu.org/gnu/gcc/gcc-9.2.0/gcc-9.2.0.tar.xz
 #		http://www.mpfr.org/mpfr-4.0.2/mpfr-4.0.2.tar.xz
 #		http://ftp.gnu.org/gnu/gmp/gmp-6.1.2.tar.xz
 #		https://ftp.gnu.org/gnu/mpc/mpc-1.1.0.tar.gz
