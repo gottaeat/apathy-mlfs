@@ -1,0 +1,20 @@
+# fs:		sysklogd-1.5.1
+# sauce:	http://www.infodrom.org/projects/sysklogd/download/sysklogd-1.5.1.tar.gz
+
+# 1
+patch -p1 < "${patchdir}"/fix-includes.patch
+patch -p1 < "${patchdir}"/ksym-fclose-fix.patch
+patch -p1 < "${patchdir}"/sysklogd-1.4.2-caen-owl-klogd-drop-root.patch
+patch -p1 < "${patchdir}"/sysklogd-1.4.2-caen-owl-syslogd-bind.patch
+patch -p1 < "${patchdir}"/sysklogd-1.4.2-caen-owl-syslogd-drop-root.patch
+patch -p1 < "${patchdir}"/sysklogd-1.5-build.patch
+
+# 2
+sed -i '/Error loading kernel symbols/{n;n;d}' ksym_mod.c
+sed -i 's/union wait/int/' syslogd.c
+
+# 3
+make CFLAGS="$CFLAGS -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
+
+# 4
+make INSTALL="install -D" prefix="/usr" install
