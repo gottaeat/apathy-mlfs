@@ -1,7 +1,6 @@
-# Tool Chain: Binutils PASS 1 of 2
-# Build and install as mlfs
+# tc:		binutils-2.32 - pass 1
 
-# Set the environment to corss-compile with cross-tools
+# set the environment to cross-compile with cross-tools
 export CC="${MLFS_TARGET}-gcc"
 export CXX="${MLFS_TARGET}-g++"
 export AR="${MLFS_TARGET}-ar"
@@ -10,24 +9,23 @@ export RANLIB="${MLFS_TARGET}-ranlib"
 export LD="${MLFS_TARGET}-ld"
 export STRIP="${MLFS_TARGET}-strip"
 
-# Configure in dedicated build directory
+# 1
 mkdir -v build && cd build
-../configure --prefix=/tools            \
-             --with-sysroot=$MLFS        \
-             --with-lib-path=/tools/lib \
-             --build=${MLFS_HOST} \
-             --host=${MLFS_TARGET} \
-             --target=${MLFS_TARGET}          \
-             --disable-nls              \
-             --disable-werror
-# Build
+../configure \
+	--prefix=/tools			\
+	--with-sysroot=$MLFS		\
+	--with-lib-path=/tools/lib	\
+	--build=${MLFS_HOST}		\
+	--host=${MLFS_TARGET}		\
+	--target=${MLFS_TARGET}		\
+	--disable-nls			\
+	--disable-werror
+
+# 2
 make
 
-# Link directories so libraries can be found in both lib & lib64
-case $(uname -m) in
-  x86_64)  ln -sv lib /tools/lib64 ;;
-esac
+# 3 >> link dirs so libraries can be found in both lib and lib64
+ln -sv lib /tools/lib64
 
-# Install
+# 4
 make install
-
