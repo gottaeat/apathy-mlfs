@@ -1,8 +1,7 @@
-# Toolchain: Gettext 0.20.1
-# Source: http://ftp.gnu.org/gnu/gettext/gettext-0.20.1.tar.xz
-# Build and install as mlfs
+# tc:		gettext-0.20.1
+# sauce:	http://ftp.gnu.org/gnu/gettext/gettext-0.20.1.tar.xz
 
-# Set the environment for cross-compiling if not done already.
+# 0
 export CC="${MLFS_TARGET}-gcc"
 export CXX="${MLFS_TARGET}-g++"
 export AR="${MLFS_TARGET}-ar"
@@ -11,16 +10,15 @@ export RANLIB="${MLFS_TARGET}-ranlib"
 export LD="${MLFS_TARGET}-ld"
 export STRIP="${MLFS_TARGET}-strip"
 
-# Configure source
-./configure --build=${MLFS_HOST} \
-            --host=${MLFS_TARGET} \
-            --prefix=/tools \
-            --disable-shared
+# 1
+./configure	\
+	--build=${MLFS_HOST}	\
+	--host=${MLFS_TARGET}	\
+	--prefix=/tools		\
+	--disable-shared
 
-
-# Build
+# 2
 make
 
-# Install the msgfmt, msgmerge and xgettext programs to toolchain
+# 3 >> just install msgfmt, msgmerge and xgettext
 cp -v gettext-tools/src/{msgfmt,msgmerge,xgettext} /tools/bin
-
