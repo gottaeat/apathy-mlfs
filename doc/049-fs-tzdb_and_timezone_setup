@@ -1,0 +1,28 @@
+# fs:		tzsd-2019c
+# sauce:	https://data.iana.org/time-zones/releases/tzdb-2019c.tar.lz
+
+# 1
+make TZDIR=/usr/share/zoneinfo
+
+# 2
+cp -v zic zdump /usr/sbin
+cp -v tzselect  /usr/bin
+
+# 3
+mkdir -pv /usr/share/zoneinfo/right
+mkdir -pv /usr/share/zoneinfo/posix
+
+install -m444 -t /usr/share/zoneinfo iso3166.tab zone1970.tab zone.tab
+
+export timezones="africa antarctica asia australasia europe northamerica \
+	southamerica pacificnew etcetera backward systemv factory"
+
+zic -y ./yearistype -d /usr/share/zoneinfo			${timezones}
+zic -y ./yearistype -d /usr/share/zoneinfo/posix		${timezones}
+zic -y ./yearistype -d /usr/share/zoneinfo/right -L leapseconds	${timezones}
+zic -y ./yearistype -d /usr/share/zoneinfo -p America/New_York
+
+unset timezones
+
+# 4 >> run tzselect to find your region and city, then set it via:
+cp -v /usr/share/zoneinfo/<REGION>/<CITY> /etc/localtime
