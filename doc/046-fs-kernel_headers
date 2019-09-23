@@ -1,19 +1,21 @@
-# Final System: Kernel Headers
-# Use latest kernel version when possible
-# Source: https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.2.11.tar.xz
-# This section is done in Chroot environment
+# ct:		linux 5.2.17 headers
 
-# Clean source tree
+# 0 >> re-export dirs since we've changed sessions
+export patchdir="${MLFS}/mss/work/patches"
+export saucedir="${MLFS}/mss/work/sources"
+export filesdir="${MLFS}/mss/work/files"
+
+# 1
 make mrproper
 
-# Extract headers
+# 2 >> apply the libre patchset.
+patch -p1 < "${patchdir}"/linux-5.2.17/5.2-deblob-gnu.patch
+
+# 3
 make INSTALL_HDR_PATH=dest headers_install
 
-# There are also some hidden files used by the kernel 
-# developers and not needed by MLFS that are removed 
-# from the intermediate directory.
+# 4 >> remove unnecessary hidden files
 find dest/include \( -name .install -o -name ..install.cmd \) -delete
 
-# Install Headers
+# 5
 cp -rv dest/include/* /usr/include
-
