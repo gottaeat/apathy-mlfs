@@ -1,14 +1,15 @@
-# Prepare Virtual Kernel Filesystems for chroot
-# This section is done by root
+# i >> this section is done as root. you can now exit the
+# mlfs user and continue as root from a fresh terminal
+# session.
 
 export MLFS=/mnt/mlfs
 
-# Create directories and nodes
+# 1 >> create directories and nodes
 mkdir -pv $MLFS/{dev,proc,sys,run}
 mknod -m 600 $MLFS/dev/console c 5 1
 mknod -m 666 $MLFS/dev/null c 1 3
 
-# Mount virtual filesystems
+# 2 >> mount virtfs
 mount -v --bind /dev $MLFS/dev
 mount -vt devpts devpts $MLFS/dev/pts -o gid=5,mode=620
 mount -vt proc proc $MLFS/proc
