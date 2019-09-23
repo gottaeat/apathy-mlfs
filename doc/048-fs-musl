@@ -1,60 +1,44 @@
-# Final System: Musl Libc
-# Source: https://www.musl-libc.org/releases/musl-1.1.23.tar.gz
-# This section is done in Chroot environment
+# fs:		musl-1.1.23
 
-# Apply a patch to prevent a crash with a NULL pointer 
-# dereference when dcngettext() is called with 
-# NULL msgid[12] arguments.
-patch -Np0 -i ../patches/musl-1.1.23-void-mo_lookup.patch
+# 1 >> apply a patch to prevent a crash with a null pointer
+# dereference when dcngettext() is called with NULL msgid[12]
+# arguments.
 
-# For i686(32 bit), there is a rounding error that
-# causes fonts to not display for SeaMonkey and 
-# Palemoon browsers:
-patch -Np1 -i ../patches/musl-1.1.23-i686-fix-rounding.patch
+patch -Np0 -i "${patchdir}"/musl-1.1.23/musl-1.1.23-void-mo_lookup.patch
 
-# Configure 
+# 2 >> there is a rounding error that causes fonts to not
+# display for seamonkey and palemoon browsers. fix that with:
+patch -Np1 -i "${patchdir}"/musl-1.1.23/musl-1.1.23-i686-fix-rounding.patch
+
+# 3
 ./configure --prefix=/usr -disable-gcc-wrapper
 
-# Build and install 
-make && make  install
+# 4
+make && make install
 
-case $(uname -m) in
-  x86_64) export ARCH="x86_64"
-          ;;
-  i686)   export ARCH="i386"
-          ;;
-  arm*)   export ARCH="arm"
-          ;;
-esac
+# 5 >> create a link to ldd
+ln -sv /lib/ld-musl-x86_64.so.1 /bin/ldd
 
-# Create link for ldd:
- ln -sv /lib/ld-musl-$ARCH.so.1 /bin/ldd
-
-# Create config for dynamic library loading:
-
-cat > /etc/ld-musl-$ARCH.path << "EOF"
+# 6 >> create the config, similar to ld.so.conf of glibc.
+cat > /etc/ld-musl-x86_64.path << "EOF"
 /lib
-/usr/local/lib
 /usr/lib
 EOF
 
-unset ARCH
-
-# Build useful utilities
-cc -fpie ../files/musl/getent.c -o getent
-cc -fpie ../files/musl/getconf.c -o getconf
-cc -fpie ../files/musl/iconv.c -o iconv
+# 7 >> rebuild utilities that still asks for the interprete in
+# the toolchain.
+cc -fpie "${filesdir}"/musl/getent.c	-o getent
+cc -fpie "${filesdir}"/musl/getconf.c	-o getconf
+cc -fpie "${filesdir}"/musl/iconv.c	-o iconv
 
 cp -v getent  /usr/bin/
 cp -v getconf /usr/bin/
 cp -v iconv   /usr/bin/
-cp -v ../files/musl/getent.1   /usr/share/man/man1/
-cp -v ../files/musl/getconf.1  /usr/share/man/man1/
 
-# Fake ldconfig
+# 8 >> fake a ldconfig for programs that call it
 ln -s true /usr/bin/ldconfig
 
-# If desired, install legacy compatability headers:
-cp -v ../files/musl-legacy-compat-void/cdefs.h /usr/include/sys/
-cp -v ../files/musl-legacy-compat-void/queue.h /usr/include/sys/
-cp -v ../files/musl-legacy-compat-void/tree.h /usr/include/sys/
+# 9 >> install legacy compat headers
+cp -v "${filesdir}"/musl-legacy-compat-void/cdefs.h	/usr/include/sys/
+cp -v "${filesdir}"/musl-legacy-compat-void/queue.h	/usr/include/sys/
+cp -v "${filesdir}"/musl-legacy-compat-void/tree.h	/usr/include/sys/
