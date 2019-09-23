@@ -1,0 +1,13 @@
+# 1 >> remove debug symbols with: 
+/usr/bin/strip --strip-debug /tools/lib/*
+/usr/bin/strip --strip-unneeded /tools/{,s}bin/*
+
+# 2 >> remove documentation and manual pages with:
+rm -rf /tools/{,share}/{info,man,doc}
+
+# 3 >> remove .la files as they're unneeded with:
+find /tools/{lib,libexec} -name \*.la -delete
+
+# 4 >> change the ownership of /tools dir to root
+# since there won't be a mlfs user in chroot
+chown -R root:root $MLFS/tools  
