@@ -1,31 +1,37 @@
-# Create Essential Files and Symlinks
-# This section is done in Chroot environment
+# 1 >> some programs use hard-wired paths to programs, which
+# do not exist in the current state of the system yet. create
+# symlinks for them now and they will be replaced once the
+# real program gets installed
+ln -sv /tools/bin/cat	 		/bin
+ln -sv /tools/bin/dd			/bin
+ln -sv /tools/bin/echo			/bin
+ln -sv /tools/bin/ln			/bin
+ln -sv /tools/bin/pwd			/bin
+ln -sv /tools/bin/rm			/bin
+ln -sv /tools/bin/stty			/bin
 
-# Some programs use hard-wired paths to programs 
-# which do not exist yet. In order to satisfy 
-# these programs, create a number of symbolic 
-# links which will be replaced by real files 
-# throughout the course of this chapter after 
-# the software has been installed: 
-ln -sv /tools/bin/{bash,cat,dd,echo,ln,pwd,rm,stty} /bin
-ln -sv /tools/bin/{install,perl} /usr/bin
-ln -sv /tools/lib/libgcc_s.so{,.1} /usr/lib
-ln -sv /tools/lib/libstdc++.{a,so{,.6}} /usr/lib
-ln -sv bash /bin/sh 
+ln -sv /tools/bin/install		/usr/bin
+ln -sv /tools/bin/perl			/usr/bin
 
-# Historically, Linux maintains a list of the 
-# mounted file systems in the file /etc/mtab. 
-# Modern kernels maintain this list internally 
-# and exposes it to the user via the /proc 
-# filesystem. To satisfy utilities that expect 
-# the presence of /etc/mtab, create the 
-# following symbolic link: 
+ln -sv /tools/lib/libgcc_s.so		/usr/lib
+ln -sv /tools/lib/libgcc_s.so.1		/usr/lib
+
+ln -sv /tools/lib/libstdc++.a		/usr/lib
+ln -sv /tools/lib/libstdc++.so		/usr/lib
+ln -sv /tools/lib/libstdc++.so.6	/usr/lib
+
+ln -sv /tools/bin/busybox		/bin/sh
+
+
+# 2 >> historically, linux maintains a list of the mounted file
+# systems the /etc/mtab file. modern linux maintains this
+# internally and exposes it to the user via /proc. to satisfy
+# programs that expect the older style, create a symlink:
 ln -sv /proc/self/mounts /etc/mtab
 
-# In order for user root to be able to login 
-# and for the name “root” to be recognized, 
-# there must be relevant entries in the 
-# /etc/passwd and /etc/group files.
+# 3 >> for root the able to login and the name `root` to be
+# recognized, create /etc/passwd and /etc/group files with
+# relevant entries:
 cat > /etc/passwd << "EOF"
 root:x:0:0:root:/root:/bin/bash
 bin:x:1:1:bin:/dev/null:/bin/false
@@ -59,22 +65,18 @@ nogroup:x:99:
 users:x:999:
 EOF
 
-# To remove the "I have no name!" prompt, start 
-# a new shell:
-exec /tools/bin/bash --login +h
+# 4 >> start a new shell.
+exec /tools/bin/sh
 
-# The login, agetty, and init programs (and others) 
-# use a number of log files to record information 
-# such as who was logged into the system and when. 
-# However, these programs will not write to the 
-# log files if they do not already exist. 
-# Initialize the log files and give them proper 
-# permissions: 
-touch /var/log/{btmp,lastlog,faillog,wtmp}
+# 5 >> login, agetty and init programs use a number of log
+# files to record information. if these files don't exist
+# these programs won't write to them. create them and give
+# them proper permissions:
+touch /var/log/btmp
+touch /var/log/lastlog
+touch /var/log/faillog
+touch /var/log/wtmp
+
 chgrp -v utmp /var/log/lastlog
 chmod -v 664  /var/log/lastlog
 chmod -v 600  /var/log/btmp
-
-# If using porg as package manager:
-mkdir -v /var/log/porg
-
