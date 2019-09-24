@@ -1,9 +1,7 @@
-# Final System: File 5.37
-# Source: ftp://ftp.astron.com/pub/file/file-5.37.tar.gz
-# This section is done in Chroot environment
+# fs:		file-5.37
 
-# Configure
+# 1
 ./configure --prefix=/usr
 
-# Build and install
+# 2
 make && make install
