@@ -3,7 +3,7 @@
 
 # 1 >> change an internal script to used sed instead of ed:
 cat > bc/fix-libmath_h << "EOF"
-#!/bin/sh
+#!/bin/bash
 sed	-e '1   s/^/{"/'	\
 	-e 's/$/",/'		\
 	-e '2,$ s/^/"/'		\
