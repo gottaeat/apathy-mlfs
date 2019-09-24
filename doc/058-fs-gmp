@@ -1,26 +1,20 @@
-# Final System: GMP 6.1.2
-# Source: http://ftp.gnu.org/gnu/gmp/gmp-6.1.2.tar.xz
-# This section is done in Chroot environment
+# fs:		gmp-6.1.2
 
-# By default, GMP configures to optimize for the
-# host CPU. If building for a less capable than 
-# the host's CPU, then:
-# cp -v configfsf.guess config.guess
-# cp -v configfsf.sub   config.sub
+# i >> gmp configures to optimized for the host cpu. if
+# building for a cpu that is less capable than the host,
+# do:
+# cp -v configfsf.guess	config.guess
+# cp -v configfsf.sub	config.sub
 
-# Configure source
-./configure --prefix=/usr    \
-            --enable-cxx     \
-            --disable-static \
-            --docdir=/usr/share/doc/gmp-6.1.2
+# 1
+./configure \
+	--prefix=/usr		\
+	--enable-cxx		\
+	--disable-static	\
+	--docdir=/usr/share/doc/gmp-6.1.2
 
-# Build
+# 2
 make 
 
-# Test if desired:
-make check 2>&1 | tee gmp-check-log
-# Make sure all 190 tests pass:
-awk '/# PASS:/{total+=$3} ; END{print total}' gmp-check-log
-
-# Install
+# 3
 make install
