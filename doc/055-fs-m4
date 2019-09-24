@@ -1,9 +1,8 @@
-# Final System: M4 1.4.18
-# Source: http://ftp.gnu.org/gnu/m4/m4-1.4.18.tar.xz
-# This section is done in Chroot environment
+# fs:		m4-1.4.18
+# sauce:	http://ftp.gnu.org/gnu/m4/m4-1.4.18.tar.xz
 
-# Configure
+# 1
 ./configure --prefix=/usr
 
-# Build and install
+# 2
 make && make install
