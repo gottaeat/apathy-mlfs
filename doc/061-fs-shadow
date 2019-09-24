@@ -1,24 +1,40 @@
-# Final System: Shadow
-# Source: https://github.com/shadow-maint/shadow/releases/download/4.7/shadow-4.7.tar.xz
-# This section is done in Chroot environment
+# fs:		shadow-4.7
+# sauce:	https://github.com/shadow-maint/shadow/releases/download/4.7/shadow-4.7.tar.xz
 
-#  Disable the installation of the groups program and its man pages, 
-#  as Coreutils provides a better version
+# 1 >> disable the installation of `groups` since coreuitls
+# provides a better version:
 sed -i 's/groups$(EXEEXT) //' src/Makefile.in
 find man -name Makefile.in -exec sed -i 's/groups\.1 / /'   {} \;
 find man -name Makefile.in -exec sed -i 's/getspnam\.3 / /' {} \;
 find man -name Makefile.in -exec sed -i 's/passwd\.5 / /'   {} \;
-sed -i -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
-       -e 's@/var/spool/mail@/var/mail@' etc/login.defs
+
+# 2 >> use `SHA-512` instead of `crypt` for better encryption:
+sed -i \
+	-e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
+	-e 's@/var/spool/mail@/var/mail@' \
+	etc/login.defs
+
+# 3 >> make the first group number 1000
 sed -i 's/1000/999/' etc/useradd
 
-# Configure source
-./configure --sysconfdir=/etc --with-group-name-max-length=32
-
-# Build, Install, and fix misplaced files
+# 4 
+./configure \
+	--sysconfdir=/etc \
+	--with-group-name-max-length=32
+# 5
 make && make install
+
+# 6 >> move misplaced files
 mv -v /usr/bin/passwd /bin
+
+# 7 >> enable shadowed passwords
+pwconv
+
+# 8 >> enable shadowed group passwords
+grpconv
+
+# 9 >> don't create a mailbox with useradd
 sed -i 's/yes/no/' /etc/default/useradd
 
-#Set system root password
+# 10 >> set the root pw
 passwd root
