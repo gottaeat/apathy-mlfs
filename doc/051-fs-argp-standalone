@@ -1,16 +1,15 @@
-# Final System: Argp-Standalone
-# Source: http://www.lysator.liu.se/~nisse/misc/argp-standalone-1.3.tar.gz
-# This section is done in Chroot environment
+# fs:		argp-standalone-1.3
+# sauce:	http://www.lysator.liu.se/~nisse/misc/argp-standalone-1.3.tar.gz
 
-# Patch source to compile under Musl libc
-patch -Np0 -i ../patches/argp-standalone-1.3-void-fix-no_use_inline.patch
+# 1 >> fix for musl.
+patch -Np0 -i "${patchdir}"/argp-standalone-1.3/argp-standalone-1.3-void-fix-no_use_inline.patch
 
-# Configure source
+# 2
 CFLAGS=" -fPIC" ./configure --prefix=/usr --disable-static
 
-# Build
+# 3
 make
 
-# Install
-cp -v libargp.a /usr/lib/
-cp -v argp.h    /usr/include/
+# 4
+cp -v libargp.a	/usr/lib/
+cp -v argp.h	/usr/include/
