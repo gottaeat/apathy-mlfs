@@ -2,26 +2,17 @@
 # do not exist in the current state of the system yet. create
 # symlinks for them now and they will be replaced once the
 # real program gets installed
-ln -sv /tools/bin/cat	 		/bin
-ln -sv /tools/bin/dd			/bin
-ln -sv /tools/bin/echo			/bin
-ln -sv /tools/bin/ln			/bin
-ln -sv /tools/bin/pwd			/bin
-ln -sv /tools/bin/rm			/bin
-ln -sv /tools/bin/stty			/bin
+ln -sv /tools/bin/{bash,cat,dd,echo,ln,pwd,rm,stty} /bin
+ln -sv /tools/bin/{install,perl} /usr/bin
+ln -sv /tools/lib/libgcc_s.so{,.1} /usr/lib
+ln -sv /tools/lib/libstdc++.{a,so{,.6}} /usr/lib
+ln -sv bash /bin/sh 
 
-ln -sv /tools/bin/install		/usr/bin
-ln -sv /tools/bin/perl			/usr/bin
-
-ln -sv /tools/lib/libgcc_s.so		/usr/lib
-ln -sv /tools/lib/libgcc_s.so.1		/usr/lib
-
-ln -sv /tools/lib/libstdc++.a		/usr/lib
-ln -sv /tools/lib/libstdc++.so		/usr/lib
-ln -sv /tools/lib/libstdc++.so.6	/usr/lib
-
-ln -sv /tools/bin/busybox		/bin/sh
-
+# 2 >> for ease of access, to use them before wget, vim and less
+# gets built, symlink them to busybox binary we built early on.
+ln -sv /tools/bin/busybox		/bin/wget
+ln -sv /tools/bin/busybox		/bin/vi
+ln -sv /tools/bin/busybox		/bin/less
 
 # 2 >> historically, linux maintains a list of the mounted file
 # systems the /etc/mtab file. modern linux maintains this
@@ -36,7 +27,6 @@ cat > /etc/passwd << "EOF"
 root:x:0:0:root:/root:/bin/bash
 bin:x:1:1:bin:/dev/null:/bin/false
 daemon:x:6:6:Daemon User:/dev/null:/bin/false
-messagebus:x:18:18:D-Bus Message Daemon User:/var/run/dbus:/bin/false
 nobody:x:99:99:Unprivileged User:/dev/null:/bin/false
 EOF
 
@@ -66,17 +56,14 @@ users:x:999:
 EOF
 
 # 4 >> start a new shell.
-exec /tools/bin/sh
+exec /tools/bin/bash --login +h
 
 # 5 >> login, agetty and init programs use a number of log
 # files to record information. if these files don't exist
 # these programs won't write to them. create them and give
 # them proper permissions:
-touch /var/log/btmp
-touch /var/log/lastlog
-touch /var/log/faillog
-touch /var/log/wtmp
+touch /var/log/{btmp,lastlog,faillog,wtmp}
 
 chgrp -v utmp /var/log/lastlog
 chmod -v 664  /var/log/lastlog
-chmod -v 600  /var/log/btmp
+chmod -v 600 /var/log/btmp
