@@ -4,7 +4,6 @@ apathy-mlfs aims to provide instructions for building a small musl libc using li
  * libressl 2.9.2
  * gcc 9.2.0 (c,c++)
  * sysvinit-2.96 + sysklogd 1.5.1 (w/ posixly correct self-written init scripts)
- * yash 2.48
  * busybox 1.31.0 (for ash at /bin/sh and recovery purposes.)(statically linked, defconfig.)
  * libre kernel, headers and firmware.
 
