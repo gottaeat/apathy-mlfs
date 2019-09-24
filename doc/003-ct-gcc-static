@@ -21,9 +21,6 @@ mkdir -v build && cd  build
 	--with-sysroot=/cross-tools/${MLFS_TARGET}	\
 	--disable-nls					\
 	--with-newlib					\
-	--without-ppl					\
-	--without-cloog					\
- 	--disable-libmpx				\
 	--disable-libitm				\
 	--disable-libvtv				\
 	--disable-libssp				\
@@ -34,14 +31,11 @@ mkdir -v build && cd  build
 	--disable-multilib				\
 	--disable-libatomic				\
 	--disable-libstdcxx				\
-	--disable-libmudflap				\
-	--disable-libcilkrts				\
 	--enable-languages=c				\
 	--disable-libquadmath				\
 	--disable-libsanitizer				\
 	--disable-decimal-float				\
-	--enable-clocale=generic			\
-	--disable-gnu-indirect-function
+	--enable-clocale=generic
 
 # 4 >> build only the mininum 
 make all-gcc all-target-libgcc
