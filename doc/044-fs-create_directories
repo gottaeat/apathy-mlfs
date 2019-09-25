@@ -1,6 +1,6 @@
 # 1 >> create a standart directory tree.
 mkdir -pv /{bin,boot,etc/{opt,sysconfig},home,lib/firmware,mnt,opt}
-mkdir -pv /sbin,srv,var}
+mkdir -pv /sbin,srv,var
 
 install -dv -m 0750 /root
 install -dv -m 1777 /tmp /var/tmp
@@ -9,7 +9,6 @@ mkdir -pv /usr/{bin,include,lib,sbin,src}
 mkdir -pv /usr/share/{color,dict,doc,info,locale,man}
 mkdir -v  /usr/share/{misc,terminfo,zoneinfo}
 mkdir -v  /usr/libexec
-mkdir -pv /usr/share/man/man{1..8}
 
 mkdir -v /var/{log,mail,spool}
 
