@@ -1,7 +1,7 @@
-# Final System: Bison 3.4.1
-# Source: http://ftp.gnu.org/gnu/bison/bison-3.4.1.tar.xz
-# This section is done in Chroot environment
+# fs:		bison-3.4.2
 
+# 1
 ./configure --prefix=/usr --docdir=/usr/share/doc/bison-3.4.1
 
+# 2
 make && make install
