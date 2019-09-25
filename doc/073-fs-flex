@@ -1,10 +1,11 @@
-# Final System: Flex 2.6.4
-# Source: https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
-# This section is done in Chroot environment
+# fs:		flex-2.6.4
+# sauce:	https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
 
-HELP2MAN=/tools/bin/true \
-./configure --prefix=/usr --docdir=/usr/share/doc/flex-2.6.4 &&
+# 1
+HELP2MAN=/tools/bin/true ./configure --prefix=/usr --docdir=/usr/share/doc/flex-2.6.4
 
+# 2
 make && make install
 
+# 3
 ln -sv flex /usr/bin/lex
