@@ -11,5 +11,5 @@ CFLAGS=" -fPIC" ./configure --prefix=/usr --disable-static
 make
 
 # 4
-cp -v libargp.a	/usr/lib/
-cp -v argp.h	/usr/include/
+cp -v libargp.a /usr/lib/
+cp -v argp.h    /usr/include/

@@ -27,9 +27,9 @@ EOF
 
 # 7 >> rebuild utilities that still asks for the interprete in
 # the toolchain.
-cc -fpie "${filesdir}"/musl/getent.c	-o getent
-cc -fpie "${filesdir}"/musl/getconf.c	-o getconf
-cc -fpie "${filesdir}"/musl/iconv.c	-o iconv
+cc -fpie "${filesdir}"/musl/getent.c   -o getent
+cc -fpie "${filesdir}"/musl/getconf.c  -o getconf
+cc -fpie "${filesdir}"/musl/iconv.c    -o iconv
 
 cp -v getent  /usr/bin/
 cp -v getconf /usr/bin/
@@ -39,6 +39,6 @@ cp -v iconv   /usr/bin/
 ln -s true /usr/bin/ldconfig
 
 # 9 >> install legacy compat headers
-cp -v "${filesdir}"/musl-legacy-compat-void/cdefs.h	/usr/include/sys/
-cp -v "${filesdir}"/musl-legacy-compat-void/queue.h	/usr/include/sys/
-cp -v "${filesdir}"/musl-legacy-compat-void/tree.h	/usr/include/sys/
+cp -v "${filesdir}"/musl-legacy-compat-void/cdefs.h /usr/include/sys/
+cp -v "${filesdir}"/musl-legacy-compat-void/queue.h /usr/include/sys/
+cp -v "${filesdir}"/musl-legacy-compat-void/tree.h  /usr/include/sys/

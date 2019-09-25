@@ -10,17 +10,17 @@ ln -sv bash /bin/sh
 
 # 2 >> for ease of access, to use them before wget, vim and less
 # gets built, symlink them to busybox binary we built early on.
-ln -sv /tools/bin/busybox		/bin/wget
-ln -sv /tools/bin/busybox		/bin/vi
-ln -sv /tools/bin/busybox		/bin/less
+ln -sv /tools/bin/busybox /bin/wget
+ln -sv /tools/bin/busybox /bin/vi
+ln -sv /tools/bin/busybox /bin/less
 
-# 2 >> historically, linux maintains a list of the mounted file
+# 3 >> historically, linux maintains a list of the mounted file
 # systems the /etc/mtab file. modern linux maintains this
 # internally and exposes it to the user via /proc. to satisfy
 # programs that expect the older style, create a symlink:
 ln -sv /proc/self/mounts /etc/mtab
 
-# 3 >> for root the able to login and the name `root` to be
+# 4 >> for root the able to login and the name `root` to be
 # recognized, create /etc/passwd and /etc/group files with
 # relevant entries:
 cat > /etc/passwd << "EOF"
@@ -55,10 +55,10 @@ nogroup:x:99:
 users:x:999:
 EOF
 
-# 4 >> start a new shell.
+# 5 >> start a new shell.
 exec /tools/bin/bash --login +h
 
-# 5 >> login, agetty and init programs use a number of log
+# 6 >> login, agetty and init programs use a number of log
 # files to record information. if these files don't exist
 # these programs won't write to them. create them and give
 # them proper permissions:
@@ -66,4 +66,4 @@ touch /var/log/{btmp,lastlog,faillog,wtmp}
 
 chgrp -v utmp /var/log/lastlog
 chmod -v 664  /var/log/lastlog
-chmod -v 600 /var/log/btmp
+chmod -v 600  /var/log/btmp

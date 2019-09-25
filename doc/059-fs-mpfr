@@ -2,10 +2,10 @@
 
 # 1
 ./configure \
-	--prefix=/usr		\
-	--disable-static	\
-	--enable-thread-safe	\
-	--docdir=/usr/share/doc/mpfr-4.0.2 
+ --prefix=/usr \
+ --disable-static \
+ --enable-thread-safe \
+ --docdir=/usr/share/doc/mpfr-4.0.2 
 
 # 2
 make

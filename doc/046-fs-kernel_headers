@@ -1,11 +1,9 @@
 # ct:		linux 5.2.17 headers
 
-# 0.0 >> re-export dirs since we've changed sessions
-export patchdir="${MLFS}/mss/work/patches"
-export saucedir="${MLFS}/mss/work/sources"
-export filesdir="${MLFS}/mss/work/files"
-
-# 0.1 >> export makeflags for them speeds
+# 0.0 >> re-export dirs and makeflags since we've changed sessions
+export patchdir="/mss/work/patches"
+export saucedir="/mss/work/sources"
+export filesdir="/mss/work/files"
 export MAKEFLAGS="-j 3"
 
 # 1

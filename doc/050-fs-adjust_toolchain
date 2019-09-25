@@ -11,9 +11,9 @@ ln -sv /tools/bin/ld /tools/x86_64-mlfs-linux-musl/bin/ld
 
 # 2 >> export the gcc specs:
 export SPECFILE=$(dirname $(gcc -print-libgcc-file-name))/specs
-gcc -dumpspecs | sed -e 's@/tools@@g'				\
-	-e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}'	\
-	-e '/\*cpp:/{n;s@$@ -isystem /usr/include@}'		> tempspecfile
+gcc -dumpspecs | sed -e 's@/tools@@g' \
+ -e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
+ -e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' > tempspecfile
 
 # 3 >> make sure that every occurance of `/lib/ld-musl-x86_64.so.1` doesn't have
 # the /tools prefix in front of it.

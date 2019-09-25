@@ -2,9 +2,9 @@
 
 # 1
 ./configure \
-	--prefix=/usr		\
-	--disable-static	\
-	--docdir=/usr/share/doc/mpc-1.1.0 
+ --prefix=/usr \
+ --disable-static \
+ --docdir=/usr/share/doc/mpc-1.1.0 
 
 # 2
 make && make install

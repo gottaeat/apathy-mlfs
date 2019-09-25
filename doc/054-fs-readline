@@ -7,9 +7,9 @@ sed -i '/{OLDSUFF}/c:' support/shlib-install
 
 # 2
 ./configure \
-	--prefix=/usr		\
-	--disable-static	\
-	--docdir=/usr/share/doc/readline-8.0
+ --prefix=/usr \
+ --disable-static \
+ --docdir=/usr/share/doc/readline-8.0
 
 # 3
 make SHLIB_LIBS="-L/tools/lib -lncursesw"

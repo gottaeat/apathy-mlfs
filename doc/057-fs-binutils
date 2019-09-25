@@ -5,22 +5,22 @@ mkdir -v build && cd build
 
 # 2
 ../configure \
-	--prefix=/usr				\
-	--enable-gold				\
-	--enable-ld=default			\
-	--enable-plugins			\
-	--enable-shared				\
-	--disable-werror			\
-	--enable-64-bit-bfd			\
-	--with-system-zlib			\
-	--enable-relro				\
-	--enable-lto				\
-	--disable-nls				\
-	--enable-deterministic-archives		\
-	--enable-threads			\
-	--disable-compressed-debug-sections	\
-	--enable-targets=x86_64-pep		\
-	--with-mmap   
+ --prefix=/usr \
+ --enable-gold \
+ --enable-ld=default \
+ --enable-plugins \
+ --enable-shared \
+ --disable-werror \
+ --enable-64-bit-bfd \
+ --with-system-zlib \
+ --enable-relro \
+ --enable-lto \
+ --disable-nls \
+ --enable-deterministic-archives \
+ --enable-threads \
+ --disable-compressed-debug-sections \
+ --enable-targets=x86_64-pep \
+ --with-mmap
 
 # 3
 make tooldir=/usr

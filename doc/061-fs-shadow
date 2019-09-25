@@ -10,17 +10,18 @@ find man -name Makefile.in -exec sed -i 's/passwd\.5 / /'   {} \;
 
 # 2 >> use `SHA-512` instead of `crypt` for better encryption:
 sed -i \
-	-e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
-	-e 's@/var/spool/mail@/var/mail@' \
-	etc/login.defs
+ -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
+ -e 's@/var/spool/mail@/var/mail@' \
+ etc/login.defs
 
 # 3 >> make the first group number 1000
 sed -i 's/1000/999/' etc/useradd
 
 # 4 
 ./configure \
-	--sysconfdir=/etc \
-	--with-group-name-max-length=32
+ --sysconfdir=/etc \
+ --with-group-name-max-length=32
+
 # 5
 make && make install
 

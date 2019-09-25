@@ -3,15 +3,15 @@
 # i >> gmp configures to optimized for the host cpu. if
 # building for a cpu that is less capable than the host,
 # do:
-# cp -v configfsf.guess	config.guess
-# cp -v configfsf.sub	config.sub
+# cp -v configfsf.guess config.guess
+# cp -v configfsf.sub   config.sub
 
 # 1
 ./configure \
-	--prefix=/usr		\
-	--enable-cxx		\
-	--disable-static	\
-	--docdir=/usr/share/doc/gmp-6.1.2
+ --prefix=/usr \
+ --enable-cxx \
+ --disable-static \
+ --docdir=/usr/share/doc/gmp-6.1.2
 
 # 2
 make 
