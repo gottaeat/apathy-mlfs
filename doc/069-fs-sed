@@ -1,10 +1,11 @@
-# Final System: Sed 4.7
-# Source: http://ftp.gnu.org/gnu/sed/sed-4.7.tar.xz
-# This section is done in Chroot environment
+# fs:		sed-4.7
 
+# 1
 sed -i 's/usr/tools/'                 build-aux/help2man
 sed -i 's/testsuite.panic-tests.sh//' Makefile.in
 
+# 2
 ./configure --prefix=/usr --bindir=/bin
 
+# 3
 make && make install
