@@ -1,162 +1,120 @@
-# Final System: GCC-9.1.0
-# Source: http://ftp.gnu.org/gnu/gcc/gcc-9.1.0/gcc-9.1.0.tar.xz
-# Source: http://isl.gforge.inria.fr/isl-0.19.tar.xz
-# This section is done in Chroot environment
+# fs:		gcc-9.2.0
+# sauce:	http://isl.gforge.inria.fr/isl-0.19.tar.xz
 
-case $(uname -m) in
-  x86_64) export ARCH="x86_64"
-          ;;
-  i686)   export ARCH="i686"
-          ;;
-  armv7l) export ARCH="armv7l"
-          ;;
-  armv6l) export ARCH="armv6l"
-          ;;
-esac
-
-# Add isl source
-tar -xf ../isl-0.19.tar.xz
+# 1 >> add the isl source
+tar xf "${saucedir}"/isl-0.19.tar.xz
 mv -v isl-0.19 isl
 
-# Apply patches [from void-linux]
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/0010-ldbl128-config.patch
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/ada-shared.patch
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/fix-cxxflags-passing.patch
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/fix-musl-execinfo.patch
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/libgcc-musl-ldbl128-config.patch
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/musl-ada.patch
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/no-stack_chk_fail_local.patch
-patch -Np0 -i ../patches/gcc-9.1.0-void-patches/non-nullness.patch
+# 2 
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/0010-ldbl128-config.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/ada-shared.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/darn.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/fix-cxxflags-passing.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/fix-musl-execinfo.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/gccgo-musl.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/invalid_tls_model.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/libffi_gnulinux.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/libgcc-musl-ldbl128-config.patch
+patch -Np1 -i "${patchdir}"/gcc-9.2.0/libgnarl-musl.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/musl-ada.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/no-stack_chk_fail_local.patch
+patch -Np0 -i "${patchdir}"/gcc-9.2.0/ppc64-pure64.patch
 
-# If building on x86_64, change the default 
-# directory name for 64-bit libraries to “lib”:
-case $(uname -m) in
-  x86_64)
-    sed -e '/m64=/s/lib64/lib/' \
-        -i.orig gcc/config/i386/t-linux64
-  ;;
-esac
+# 3 >> change the default directory name for 64-bit libraries to /lib
+sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64
 
-# _FORTIFY_SOURCE needs an optimization level.
+# 4 >> _FORTIFY_SOURCE needs an optimization level.
 sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {gcc,libiberty}/configure
 
-# Configure source
+# 5
 mkdir -v build && cd build
-SED=sed  libat_cv_have_ifunc=no       \
-../configure --prefix=/usr            \
-             --build="$ARCH-linux-musl"\
-             --with-system-zlib       \
-             --with-isl \
-             --with-linker-hash-style=gnu \
-             --enable-languages=c,c++ \
-             --enable-shared \
-             --enable-threads=posix \
-             --enable-__cxa_atexit \
-             --enable-c99 \
-             --enable-long-long \
-             --enable-clocale=generic \
-             --enable-languages=c,c++ \
-             --enable-plugins \
-             --enable-tls \
-             --enable-lto \
-             --enable-libstdcxx-time \
-             --enable-checking=release \
-             --enable-fully-dynamic-string \
-             --enable-default-pie \
-             --enable-default-ssp \
-             --enable-vtable-verify \
-             --enable-linker-build-id \
-             --enable-fast-character \
-             --disable-libstdcxx-pch \
-             --disable-nls \
-             --disable-multilib       \
-             --disable-bootstrap      \
-             --disable-symvers \
-             --disable-gnu-indirect-function \
-             --disable-libmudflap \
-             --disable-libsanitizer \
-             --disable-target-libiberty \
-             --disable-libunwind-exceptions \
-             --disable-libmpx  
 
-# Build
-make
+SED=sed \
+libat_cv_have_ifunc=no \
+../configure \
+ --prefix=/usr \
+ --build="x86_64-linux-musl" \
+ --with-system-zlib \
+ --with-isl \
+ --with-linker-hash-style=gnu \
+ --enable-languages=c,c++ \
+ --enable-shared \
+ --enable-threads=posix \
+ --enable-__cxa_atexit \
+ --enable-c99 \
+ --enable-long-long \
+ --enable-clocale=generic \
+ --enable-languages=c,c++ \
+ --enable-plugins \
+ --enable-tls \
+ --enable-lto \
+ --enable-libstdcxx-time \
+ --enable-checking=release \
+ --enable-fully-dynamic-string \
+ --enable-default-pie \
+ --enable-default-ssp \
+ --enable-vtable-verify \
+ --enable-linker-build-id \
+ --enable-fast-character \
+ --disable-libstdcxx-pch \
+ --disable-nls \
+ --disable-multilib \
+ --disable-bootstrap \
+ --disable-symvers \
+ --disable-gnu-indirect-function \
+ --disable-libmudflap \
+ --disable-libsanitizer \
+ --disable-target-libiberty \
+ --disable-libunwind-exceptions \
+ --disable-libmpx  
 
-# Test GCC:
-ulimit -s 32768
-# Remove one test known to cause a problem
-rm ../gcc/testsuite/g++.dg/pr83239.C
-# Test the results as a non-privileged user, but do not stop at errors
-chown -Rv nobody . 
-su nobody -s /bin/bash -c "PATH=$PATH make -k check"
-# To receive a summary of the test suite results, run:
-../contrib/test_summary
-# Or, For only the summaries, pipe the output through grep -A7 Summ"
-../contrib/test_summary | grep -A7 Summ
+# 6
+make && make install
 
-# Install
-make install
-
-# Create a symlink required by the FHS for "historical" reasons
+# 7 >> create historical symlinks:
 ln -sv ../usr/bin/cpp /lib
-
-# Many packages use the name cc to call the C compiler. To 
-# satisfy those packages, create a symlink
 ln -sv gcc /usr/bin/cc
 
-# Add a compatibility symlink to enable building programs with 
-# Link Time Optimization (LTO): 
+# 8 >> enable lto with:
 install -v -dm755 /usr/lib/bfd-plugins
-ln -sfv ../../libexec/gcc/$(gcc -dumpmachine)/9.1.0/liblto_plugin.so \
-        /usr/lib/bfd-plugins/
+ln -sfv ../../libexec/gcc/x86_64-linux-musl/9.2.0/liblto_plugin.so /usr/lib/bfd-plugins/
 mkdir -pv /usr/share/gdb/auto-load/usr/lib
 mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib
 
-# Modify specsfile:
-# First dump current specfile to a file
-export SPECFILE=`dirname $(gcc -print-libgcc-file-name)`/specs
-gcc -dumpspecs > specs
-
-# Modify specs file to match this:
-# *cpp:
-# %{posix:-D_POSIX_SOURCE} %{pthread:-D_REENTRANT} -I /usr/lib/gcc/$ARCH-linux-musl/9.1.0/include -I /usr/lib/gcc/$ARCH-linux-musl/9.1.0/include-fixed
-# Install new specs file:
-cp -v specs $SPECFILE
-unset SPECFILE
-
-# Test final system's toolchain:
+# 9 >> sanity check
 echo 'int main(){}' > dummy.c
 cc dummy.c -v -Wl,--verbose &> dummy.log
+
+# 9.1
 readelf -l a.out | grep ': /lib'
-# Should output:
+# should print:
 # [Requesting program interpreter: /lib/ld-musl-x86_64.so.1]
-# or
-# [Requesting program interpreter: /lib/ld-musl-i386.so.1]
-# or
-#  [Requesting program interpreter: /lib/ld-musl-arm.so.1]
+
+# 9.2
 grep  'crt[1in].o succeeded' dummy.log
-# Should output:
-# attempt to open /usr/lib/gcc/$ARCH-linux-musl/9.1.0/../../../../lib/Scrt1.o succeeded
-# attempt to open /usr/lib/gcc/$ARCH-linux-musl/9.1.0/../../../../lib/crti.o succeeded
-# attempt to open /usr/lib/gcc/$ARCH-linux-musl/9.1.0/../../../../lib/crtn.o succeeded
+# should print:
+# attempt to open /usr/lib/gcc/x86_64-linux-musl/9.2.0/../../../../lib/Scrt1.o succeeded
+# attempt to open /usr/lib/gcc/x86_64-linux-musl/9.2.0/../../../../lib/crti.o succeeded
+# attempt to open /usr/lib/gcc/x86_64-linux-musl/9.2.0/../../../../lib/crtn.o succeeded
+
+# 9.3
 grep -B2 '^ /usr/lib/gcc' dummy.log
-# Should output:
+# should print:
 # #include <...> search starts here:
-# /usr/lib/gcc/$ARCH-linux-musl/9.1.0/include-fixed
-# /usr/local/include
 # /usr/include
-# /usr/lib/gcc/$ARCH-linux-musl/9.1.0/include
+# /usr/lib/gcc/x86_64-linux-musl/9.2.0/include
+
+# 9.4
 grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
-# Should output:
-# SEARCH_DIR("/usr/$ARCH-pc-linux-musl/lib32")
-# SEARCH_DIR("/usr/local/lib32")
-# SEARCH_DIR("/lib32")
-# SEARCH_DIR("/usr/lib32")
-# SEARCH_DIR("/usr/$ARCH-pc-linux-musl/lib")
+# should print:
+# SEARCH_DIR("/usr/x86_64-pc-linux-musl/lib64")
+# SEARCH_DIR("/usr/local/lib64")
+# SEARCH_DIR("/lib64")
+# SEARCH_DIR("/usr/lib64")
+# SEARCH_DIR("/usr/x86_64-pc-linux-musl/lib")
 # SEARCH_DIR("/usr/local/lib")
 # SEARCH_DIR("/lib")
 # SEARCH_DIR("/usr/lib");
 
-# If all is well, remove test files:
+# 10 >> if all went smoothly, clear the sanity check files with:
 rm -v dummy.c a.out dummy.log
-
