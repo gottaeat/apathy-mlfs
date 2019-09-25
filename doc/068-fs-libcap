@@ -1,10 +1,16 @@
-# Final System: Libcap
-# Source: https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.25.tar.xz
-# This section is done in Chroot environment
+# fs:		libcap-2.27
+# sauce:	https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.27.tar.xz
 
+# 1
 sed -i '/install.*STALIBNAME/d' libcap/Makefile
-make && make RAISE_SETFCAP=no lib=lib prefix=/usr install
 
+# 2
+make
+
+# 3
+make RAISE_SETFCAP=no lib=lib prefix=/usr install
 chmod -v 755 /usr/lib/libcap.so
+
+# 4
 mv -v /usr/lib/libcap.so.* /lib
 ln -sfv ../../lib/$(readlink /usr/lib/libcap.so) /usr/lib/libcap.so
