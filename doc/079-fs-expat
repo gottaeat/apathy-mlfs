@@ -1,9 +1,14 @@
-# Final System: Expat
-# Source : https://prdownloads.sourceforge.net/expat/expat-2.2.6.tar.bz2
-# This section is done in Chroot environment
+# fs:		expat-2.2.8
+# sauce:	https://prdownloads.sourceforge.net/expat/expat-2.2.8.tar.bz2
 
+# 1
 sed -i 's|usr/bin/env |bin/|' run.sh.in
-./configure --prefix=/usr    \
-            --disable-static \
-            --docdir=/usr/share/doc/expat-2.2.6
+
+# 2
+./configure \
+ --prefix=/usr \
+ --disable-static \
+ --docdir=/usr/share/doc/expat-2.2.6
+
+# 2
 make && make install
