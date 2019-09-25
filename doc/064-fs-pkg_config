@@ -1,12 +1,12 @@
-# Final System: Pkg-Config
-# Source: https://pkg-config.freedesktop.org/releases/pkg-config-0.29.2.tar.gz
-# This section is done in Chroot environment
+# fs:		pkg-config-0.29.2
+# sauce:	https://pkg-config.freedesktop.org/releases/pkg-config-0.29.2.tar.gz
 
-# Configure source
-./configure --prefix=/usr              \
-            --with-internal-glib       \
-            --disable-host-tool        \
-            --docdir=/usr/share/doc/pkg-config-0.29.2
+# 1
+./configure \
+ --prefix=/usr \
+ --with-internal-glib \
+ --disable-host-tool \
+ --docdir=/usr/share/doc/pkg-config-0.29.2
 
-# Build and Install
+# 2
 make && make install
