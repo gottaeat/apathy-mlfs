@@ -1,27 +1,27 @@
-# Final System: Gettext
-# Source: http://ftp.gnu.org/gnu/gettext/gettext-0.20.1.tar.xz
-# This section is done in Chroot environment
+# fs:		gettext-0.20.1
+# sauce:	http://ftp.gnu.org/gnu/gettext/gettext-0.20.1.tar.xz
 
-# Suppress two invocations of test-lock which on some machines can loop forever: 
-sed -i '/^TESTS =/d' gettext-runtime/tests/Makefile.in &&
+# 1 >> suppress two invocations of test-lock which can loop forever:
+sed -i '/^TESTS =/d' gettext-runtime/tests/Makefile.in
 sed -i 's/test-lock..EXEEXT.//' gettext-tools/gnulib-tests/Makefile.in
 
-# Configure ..
-./configure --prefix=/usr    \
-            --disable-static \
-            --with-included-gettext \
-            --docdir=/usr/share/doc/gettext-0.20.1  &&
+# 2
+./configure \
+ --prefix=/usr \
+ --disable-static \
+ --with-included-gettext \
+ --docdir=/usr/share/doc/gettext-0.20.1
 
-# Build
+# 3
 make
 
-# Fix conflict with musl before installing by first backing up header...
+# 4 >> move libintl header deployed by musl so it won't get replaced:
 mv -v  /usr/include/libintl.h /usr/include/libintl.h.musl
 
-# Install
+# 5
 make install
 
-# Move file to avoid conflict
+# 6 >> move files to avoid conflict with musl headers
 mkdir -v /usr/include/gettext
-mv -v  /usr/include/libintl.h /usr/include/gettext
+mv -v /usr/include/libintl.h /usr/include/gettext
 mv -v /usr/include/libintl.h.musl /usr/include/libintl.h
