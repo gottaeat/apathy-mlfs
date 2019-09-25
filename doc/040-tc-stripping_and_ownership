@@ -1,6 +1,9 @@
 # 1 >> remove debug symbols with: 
-/usr/bin/strip --strip-debug /tools/lib/*
-/usr/bin/strip --strip-unneeded /tools/{,s}bin/*
+find /tools/lib -type f -name \*.a -exec strip --strip-debug {} ';'
+find /tools/lib -type f \( -name \*.so* -a ! -name \*dbg \) -exec strip --strip-unneeded {} ';'
+find /tools/lib -type f \( -name \*.so* -a ! -name \*dbg \) -exec strip --strip-unneeded {} ';'
+find /tools/bin -type f -exec strip --strip-all {} ';'
+find /tools/libexec -type f -exec strip --strip-all {} ';'
 
 # 2 >> remove documentation and manual pages with:
 rm -rf /tools/{,share}/{info,man,doc}
