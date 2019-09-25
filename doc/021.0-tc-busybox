@@ -17,6 +17,3 @@ make clean
 # 2 
 make LDFLAGS=-static
 cp busybox /tools/bin/
-
-# 3 >> set ash as /bin/sh
-ln -sv busybox /tools/bin/sh
