@@ -1,13 +1,15 @@
-# Final System: Xz 5.2.4
-# Source: https://tukaani.org/xz/xz-5.2.4.tar.xz
-# This section is done in Chroot environment
+# fs:		xz-5.2.4
 
-./configure --prefix=/usr    \
-            --disable-static \
-            --docdir=/usr/share/doc/xz-5.2.4
+# 1
+./configure \
+ --prefix=/usr \
+ --disable-static \
+ --docdir=/usr/share/doc/xz-5.2.4
 
+# 2
 make && make install
-mv -v   /usr/bin/{lzma,unlzma,lzcat,xz,unxz,xzcat} /bin
+
+# 3 >> move misplaced files
+mv -v /usr/bin/{lzma,unlzma,lzcat,xz,unxz,xzcat} /bin
 mv -v /usr/lib/liblzma.so.* /lib
 ln -svf ../../lib/$(readlink /usr/lib/liblzma.so) /usr/lib/liblzma.so
-
