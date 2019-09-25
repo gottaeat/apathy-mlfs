@@ -1,0 +1,14 @@
+# fs:		musl-fts-1.2.7
+# sauce:	https://github.com/pullmoll/musl-fts/archive/v1.2.7.tar.gz
+
+# 1
+sed -i "/pkgconfig_DATA/i pkgconfigdir=/usr/lib/pkgconfig" Makefile.am
+
+# 2
+./bootstrap.sh
+
+# 3
+./configure --prefix=/usr
+
+# 4
+make && make install
