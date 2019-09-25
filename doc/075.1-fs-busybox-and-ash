@@ -1,0 +1,13 @@
+# fs:		busybox-1.31.0
+
+# 1
+make defconfig
+make clean
+
+# 2
+make LDFLAGS=-static
+cp -v busybox /bin/busybox
+
+# 3
+ln -sfv /bin/busybox /bin/ash
+ln -sfv /bin/ash /bin/sh

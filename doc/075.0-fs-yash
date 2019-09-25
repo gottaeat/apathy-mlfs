@@ -1,0 +1,27 @@
+# fs:		yash-2.48
+# sauce:	https://osdn.net/dl/yash/yash-2.49.tar.xz
+
+# 1
+
+./configure \
+ --prefix=/usr \
+ --enable-array \
+ --enable-dirstack \
+ --enable-help \
+ --enable-history \
+ --enable-lineedit \
+ --enable-nls \
+ --enable-printf \
+ --enable-socket \
+ --enable-test \
+ --enable-ulimit
+
+# 2
+make && make install
+
+# 3
+mv -vf /usr/bin/yash /bin/yash
+
+# 4
+mkdir -pv /mss/bin/
+ln -sfv /bin/yash /mss/bin/sh
