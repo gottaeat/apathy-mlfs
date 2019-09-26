@@ -2,12 +2,12 @@
 # sauce:	http://www.infodrom.org/projects/sysklogd/download/sysklogd-1.5.1.tar.gz
 
 # 1
-patch -p1 < "${patchdir}"/fix-includes.patch
-patch -p1 < "${patchdir}"/ksym-fclose-fix.patch
-patch -p1 < "${patchdir}"/sysklogd-1.4.2-caen-owl-klogd-drop-root.patch
-patch -p1 < "${patchdir}"/sysklogd-1.4.2-caen-owl-syslogd-bind.patch
-patch -p1 < "${patchdir}"/sysklogd-1.4.2-caen-owl-syslogd-drop-root.patch
-patch -p1 < "${patchdir}"/sysklogd-1.5-build.patch
+patch -p1 < "${patchdir}"/sysklogd-1.5.1/fix-includes.patch
+patch -p1 < "${patchdir}"/sysklogd-1.5.1/ksym-fclose-fix.patch
+patch -p1 < "${patchdir}"/sysklogd-1.5.1/sysklogd-1.4.2-caen-owl-klogd-drop-root.patch
+patch -p1 < "${patchdir}"/sysklogd-1.5.1/sysklogd-1.4.2-caen-owl-syslogd-bind.patch
+patch -p1 < "${patchdir}"/sysklogd-1.5.1/sysklogd-1.4.2-caen-owl-syslogd-drop-root.patch
+patch -p1 < "${patchdir}"/sysklogd-1.5.1/sysklogd-1.5-build.patch
 
 # 2
 sed -i '/Error loading kernel symbols/{n;n;d}' ksym_mod.c
@@ -17,4 +17,19 @@ sed -i 's/union wait/int/' syslogd.c
 make CFLAGS="$CFLAGS -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
 
 # 4
-make INSTALL="install -D" prefix="/usr" install
+make INSTALL="install -D" BINDIR=/sbin install
+
+# 5 >> configuration
+cat > /etc/syslog.conf << "EOF"
+# from lfs 8.4
+auth,authpriv.* -/var/log/auth.log
+*.*;auth,authpriv.none -/var/log/sys.log
+daemon.* -/var/log/daemon.log
+kern.* -/var/log/kern.log
+mail.* -/var/log/mail.log
+user.* -/var/log/user.log
+*.emerg *
+
+# iptables separate log instead of dmesg
+kern.warning     /var/log/iptables.log
+EOF
