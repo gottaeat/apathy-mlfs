@@ -1,13 +1,19 @@
-# Final System: KBD
-# Source: https://www.kernel.org/pub/linux/utils/kbd/kbd-2.0.4.tar.xz
-# This section is done in Chroot environment
+# fs:		kbd-2.20
+# sauce:        https://www.kernel.org/pub/linux/utils/kbd/kbd-2.2.0.tar.gz
 
-patch -Np1 -i ../patches/kbd-2.0.4-backspace-1.patch
+# 1
+patch -Np1 < "${patchdir}"/kbd-2.20/fix-tests.patch
+patch -Np1 < "${patchdir}"/kbd-2.20/0001-libkbdfile-Check-compression-suffix-even-if-the-suff.patch
+
+# 2
 sed -i 's/\(RESIZECONS_PROGS=\)yes/\1no/g' configure
 sed -i 's/resizecons.8 //' docs/man/man8/Makefile.in
 
-# Configure
+# 3
+cp -v "${filesdir}"/kbd-2.20/error.h .
+
+# 4
 PKG_CONFIG_PATH=/tools/lib/pkgconfig ./configure --prefix=/usr --disable-vlock
 
-# Build and install
+# 5
 make && make install
