@@ -40,7 +40,6 @@ libat_cv_have_ifunc=no \
  --enable-languages=c,c++ \
  --enable-shared \
  --enable-threads=posix \
- --enable-__cxa_atexit \
  --enable-c99 \
  --enable-long-long \
  --enable-clocale=generic \
@@ -61,12 +60,9 @@ libat_cv_have_ifunc=no \
  --disable-multilib \
  --disable-bootstrap \
  --disable-symvers \
- --disable-gnu-indirect-function \
- --disable-libmudflap \
  --disable-libsanitizer \
  --disable-target-libiberty \
- --disable-libunwind-exceptions \
- --disable-libmpx  
+ --disable-libunwind-exceptions
 
 # 6
 make && make install
@@ -81,30 +77,43 @@ ln -sfv ../../libexec/gcc/x86_64-linux-musl/9.2.0/liblto_plugin.so /usr/lib/bfd-
 mkdir -pv /usr/share/gdb/auto-load/usr/lib
 mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib
 
-# 9 >> sanity check
+# 9.0 >> dump the specs file
+export SPECFILE=`dirname $(gcc -print-libgcc-file-name)`/specs
+gcc -dumpspecs > specs
+
+# 9.1 >> modify the specs file to match this
+#
+# *cpp:
+# %{posix:-D_POSIX_SOURCE} %{pthread:-D_REENTRANT} -I /usr/lib/gcc/x86_64-linux-musl/9.2.0/include-fixed
+
+# 9.2 >> install the modified specs file
+cp -v specs $SPECFILE
+unset SPECFILE
+
+# 10 >> sanity check
 echo 'int main(){}' > dummy.c
 cc dummy.c -v -Wl,--verbose &> dummy.log
 
-# 9.1
+# 10.1
 readelf -l a.out | grep ': /lib'
 # should print:
 # [Requesting program interpreter: /lib/ld-musl-x86_64.so.1]
 
-# 9.2
+# 10.2
 grep  'crt[1in].o succeeded' dummy.log
 # should print:
 # attempt to open /usr/lib/gcc/x86_64-linux-musl/9.2.0/../../../../lib/Scrt1.o succeeded
 # attempt to open /usr/lib/gcc/x86_64-linux-musl/9.2.0/../../../../lib/crti.o succeeded
 # attempt to open /usr/lib/gcc/x86_64-linux-musl/9.2.0/../../../../lib/crtn.o succeeded
 
-# 9.3
+# 10.3
 grep -B2 '^ /usr/lib/gcc' dummy.log
 # should print:
 # #include <...> search starts here:
 # /usr/include
 # /usr/lib/gcc/x86_64-linux-musl/9.2.0/include
 
-# 9.4
+# 10.4
 grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
 # should print:
 # SEARCH_DIR("/usr/x86_64-pc-linux-musl/lib64")
@@ -116,5 +125,5 @@ grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
 # SEARCH_DIR("/lib")
 # SEARCH_DIR("/usr/lib");
 
-# 10 >> if all went smoothly, clear the sanity check files with:
+# 11 >> if all went smoothly, clear the sanity check files with:
 rm -v dummy.c a.out dummy.log
