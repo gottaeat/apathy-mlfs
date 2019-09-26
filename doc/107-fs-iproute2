@@ -1,9 +1,11 @@
-# Final System: IProute2 5.2.0
-# Source: https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-5.2.0.tar.xz
-# This section is done in Chroot environment
+# fs:		iproute-5.3.0
+# sauce:	https://mirrors.edge.kernel.org/pub/linux/utils/net/iproute2/iproute2-5.3.0.tar.xz
 
+# 1
 sed -i /ARPD/d Makefile
 rm -fv man/man8/arpd.8
 sed -i 's/.m_ipt.o//' tc/Makefile
 
-make && make DOCDIR=/usr/share/doc/iproute2-5.2.0 install
+# 2
+make
+make DOCDIR=/usr/share/doc/iproute2-5.3.0 install
