@@ -1,28 +1,27 @@
-# Final System: Findutils
-# Source: http://ftp.gnu.org/gnu/findutils/findutils-4.6.0.tar.gz
-# This section is done in Chroot environment
+# fs:		findutils-4.6.0
 
-# Suppress a test which on some machines can loop forever: 
+# 1 >> suppress a test which on some machines can loop forever: 
 sed -i 's/test-lock..EXEEXT.//' tests/Makefile.in
 
-# Apply patches:
-patch -Np0 -i ../patches/findutils-4.6.0-void/gnulib-freadahead.patch
-patch -Np0 -i ../patches/findutils-4.6.0-void/gnulib-fseeko.patch
-patch -Np0 -i ../patches/findutils-4.6.0-void/gnulib-mountlist.patch
-patch -Np0 -i ../patches/findutils-4.6.0-void/gnulib-stdio-impl.patch
+# 2
+patch -Np0 -i "${patchdir}"/findutils-4.6.0/gnulib-freadahead.patch
+patch -Np0 -i "${patchdir}"/findutils-4.6.0/gnulib-fseeko.patch
+patch -Np0 -i "${patchdir}"/findutils-4.6.0/gnulib-mountlist.patch
+patch -Np0 -i "${patchdir}"/findutils-4.6.0/gnulib-stdio-impl.patch
 
-# Configure source
+# 3
 ./configure --prefix=/usr --localstatedir=/var/lib/locate
 
-# Build in this order:
-make -C locate dblocation.texi &&
+# 4
+make -C locate dblocation.texi
 make 
 
-# Install
+# 5
 make install
 
+# 6
 mv -v /usr/bin/find /bin
 
-# The updatedb script also needs to be modified to 
-# correct an explicit path
+# 7 >> updatedb script also needs to be modified to correct
+# an explicit path
 sed -i 's|find:=${BINDIR}|find:=/bin|' /usr/bin/updatedb
