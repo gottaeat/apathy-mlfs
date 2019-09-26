@@ -1,0 +1,38 @@
+# fs:		network configuration
+
+# i >> unlike the traditional sysvinit bootscripts, we don't create
+# individual files to configure the network. instead, modify the
+# bootscripts to change the adapter and the local network settings.
+
+# 1 >> open up the network bootscript with vim:
+vim /etc/init.d/network
+
+# 2 >> change these lines to fit your machine:
+IFACE=enp2s0		# whatever adapter name that eudev gave you
+IP=192.168.1.32		# your local ip
+GATEWAY=192.168.1.1
+PREFIX=24
+BROADCAST=192.168.1.99
+
+# i >> the apater name can be found by:
+ip addr
+
+# 3 >> resolv.conf
+cat > /etc/resolv.conf << "EOF"
+# apathy-mlfs resolv.conf
+nameserver 1.1.1.1
+nameserver 1.0.0.1
+EOF
+
+# 4 >> hostname
+echo "apathy-mlfs" > /etc/hostname
+
+# 5.1 >> remove the old hosts file created when
+# building perl:
+rm -rfv /etc/hosts
+
+# 5.2 >> create the new hosts file
+cat > /etc/hosts << "EOF"
+127.0.0.1	localhost
+127.0.1.1	apathy-mlfs	apathy-mlfs
+EOF
