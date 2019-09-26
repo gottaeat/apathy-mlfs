@@ -1,21 +1,12 @@
-# Final System: Grub
-# Source: https://ftp.gnu.org/gnu/grub/grub-2.04.tar.xz
-# This section is done in Chroot environment
+# fs:		grub-2.04
+# sauce:	https://ftp.gnu.org/gnu/grub/grub-2.04.tar.xz
 
-# for BIOS-based PCs:
-#./configure --prefix=/usr          \
-#            --sbindir=/sbin        \
-#            --sysconfdir=/etc      \
-#            --disable-efiemu       \
-#            --disable-werror
-
-# for UEFI-based PCs:
-./configure --prefix=/usr          \
-            --target=x86_64        \
-            --with-platform=efi    \
-            --sbindir=/sbin        \
-            --sysconfdir=/etc      \
-            --disable-werror
+# 1 >> configure for bios
+./configure \
+ --prefix=/usr \
+ --sbindir=/sbin \
+ --sysconfdir=/etc \
+ --disable-efiemu\
+ --disable-werror
 
 make && make install
-
