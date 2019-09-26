@@ -1,10 +1,10 @@
-# Final System: Gawk
-# Source: http://ftp.gnu.org/gnu/gawk/gawk-5.0.0.tar.xz
-# This section is done in Chroot environment
+# fs:		gawk-5.0.1
 
-# Ensure some unneeded files are not installed
+# 1 >> ensure some unneeded files are not installed
 sed -i 's/extras//' Makefile.in
 
+# 2
 ./configure --prefix=/usr
 
+# 3
 make && make install
