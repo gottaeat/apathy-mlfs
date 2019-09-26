@@ -5,37 +5,37 @@
 #		https://ftp.gnu.org/gnu/mpc/mpc-1.1.0.tar.gz
 
 # 1
-tar -xf "${saucedir}"/mpfr-4.0.2.tar.xz	&& mv -v mpfr-4.0.2 mpfr
-tar -xf "${saucedir}"/gmp-6.1.2.tar.xz	&& mv -v gmp-6.1.2 gmp
-tar -xf "${saucedir}"/mpc-1.1.0.tar.gz	&& mv -v mpc-1.1.0 mpc
+tar -xf "${saucedir}"/mpfr-4.0.2.tar.xz && mv -v mpfr-4.0.2 mpfr
+tar -xf "${saucedir}"/gmp-6.1.2.tar.xz  && mv -v gmp-6.1.2 gmp
+tar -xf "${saucedir}"/mpc-1.1.0.tar.gz  && mv -v mpc-1.1.0 mpc
 
 # 2
 mkdir -v build && cd  build
 
 # 3
 ../configure \
-	--prefix=/cross-tools				\
-	--build=${MLFS_HOST}				\
-	--host=${MLFS_HOST}				\
- 	--target=${MLFS_TARGET}				\
-	--with-sysroot=/cross-tools/${MLFS_TARGET}	\
-	--disable-nls					\
-	--with-newlib					\
-	--disable-libitm				\
-	--disable-libvtv				\
-	--disable-libssp				\
-	--disable-shared				\
-	--disable-libgomp				\
- 	--without-headers				\
-	--disable-threads				\
-	--disable-multilib				\
-	--disable-libatomic				\
-	--disable-libstdcxx				\
-	--enable-languages=c				\
-	--disable-libquadmath				\
-	--disable-libsanitizer				\
-	--disable-decimal-float				\
-	--enable-clocale=generic
+ --prefix=/cross-tools \
+ --build=${MLFS_HOST} \
+ --host=${MLFS_HOST} \
+ --target=${MLFS_TARGET} \
+ --with-sysroot=/cross-tools/${MLFS_TARGET} \
+ --disable-nls \
+ --with-newlib \
+ --disable-libitm \
+ --disable-libvtv \
+ --disable-libssp \
+ --disable-shared \
+ --disable-libgomp \
+ --without-headers \
+ --disable-threads \
+ --disable-multilib \
+ --disable-libatomic \
+ --disable-libstdcxx \
+ --enable-languages=c \
+ --disable-libquadmath \
+ --disable-libsanitizer \
+ --disable-decimal-float \
+ --enable-clocale=generic
 
 # 4 >> build only the mininum 
 make all-gcc all-target-libgcc

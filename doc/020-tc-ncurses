@@ -15,15 +15,15 @@ sed -i '/LIBTOOL_INSTALL/d' c++/Makefile.in
 
 # 2
 ./configure \
-	--prefix=/tools		\
-	--build=${MLFS_HOST}	\
-	--host=${MLFS_TARGET}	\
-	--with-shared		\
-	--without-debug		\
-	--without-ada		\
-	--enable-widec		\
-	--enable-overwrite	\
-	--with-build-cc="gcc -D_GNU_SOURCE"
+ --prefix=/tools \
+ --build=${MLFS_HOST} \
+ --host=${MLFS_TARGET} \
+ --with-shared \
+ --without-debug \
+ --without-ada \
+ --enable-widec \
+ --enable-overwrite \
+ --with-build-cc="gcc -D_GNU_SOURCE"
 
 # 3
 make && make install

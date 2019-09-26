@@ -12,10 +12,10 @@ export STRIP="${MLFS_TARGET}-strip"
 
 # 1
 ./configure \
-	--build=${MLFS_HOST}	\
-	--host=${MLFS_TARGET}	\
-	--prefix=/tools		\
-	--without-guile
+ --build=${MLFS_HOST} \
+ --host=${MLFS_TARGET} \
+ --prefix=/tools \
+ --without-guile
 
 # 2
 make && make install

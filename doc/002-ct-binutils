@@ -5,15 +5,15 @@
 mkdir -v build && cd build
 
 # 2
-../configure	\
-	--prefix=/cross-tools				\
-	--target=${MLFS_TARGET}				\
-	--with-sysroot=/cross-tools/${MLFS_TARGET}	\
-	--disable-nls					\
-	--disable-multilib				\
-	--disable-werror				\
-	--enable-deterministic-archives			\
-	--disable-compressed-debug-sections 
+../configure \
+ --prefix=/cross-tools \
+ --target=${MLFS_TARGET} \
+ --with-sysroot=/cross-tools/${MLFS_TARGET} \
+ --disable-nls \
+ --disable-multilib \
+ --disable-werror \
+ --enable-deterministic-archives \
+ --disable-compressed-debug-sections 
 
 # 3
 make configure-host

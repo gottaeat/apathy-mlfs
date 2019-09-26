@@ -3,9 +3,9 @@
 
 # 1 >> configure source for cross build
 ./configure \
-	CROSS_COMPILE=${MLFS_TARGET}- \
-	--prefix=/ \
-	--target=${MLFS_TARGET} 
+ CROSS_COMPILE=${MLFS_TARGET}- \
+ --prefix=/ \
+ --target=${MLFS_TARGET} 
 
 # 2
 make && make DESTDIR=/cross-tools install

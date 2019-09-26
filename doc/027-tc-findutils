@@ -17,9 +17,9 @@ echo "#define _IO_IN_BACKUP 0x100" >> gl/lib/stdio-impl.h
 
 # 2
 ./configure \
-	--build=${MLFS_HOST}	\
-	--host=${MLFS_TARGET}	\
-	--prefix=/tools
+ --build=${MLFS_HOST} \
+ --host=${MLFS_TARGET} \
+ --prefix=/tools
 
 # 3
 make && make install

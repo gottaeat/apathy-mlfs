@@ -29,11 +29,11 @@ EOF
 
 # 2
 ./configure \
-	--prefix=/tools		\
-	--without-bash-malloc	\
-	--build=${MLFS_HOST}	\
-	--host=${MLFS_TARGET}	\
-	--cache-file=config.cache
+ --prefix=/tools \
+ --without-bash-malloc \
+ --build=${MLFS_HOST} \
+ --host=${MLFS_TARGET} \
+ --cache-file=config.cache
 
 # 3
 make && make install

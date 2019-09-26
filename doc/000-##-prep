@@ -1,8 +1,8 @@
 # set mlfs, create partition and mount it to $MLFS
-export		MLFS=/mnt/mlfs
-mkfs.etx4	/dev/sdXY
-mkdir -pv	$MLFS
-mount		/dev/sdXY $MLFS
+export    MLFS=/mnt/mlfs
+mkfs.etx4 /dev/sdXY
+mkdir -pv $MLFS
+mount     /dev/sdXY $MLFS
 
 # create directories to build tools and link them to host's root directory:
 mkdir -v $MLFS/cross-tools

@@ -2,9 +2,9 @@
 
 # 1
 ./configure \
-	CROSS_COMPILE=${MLFS_TARGET}- \
-	--prefix=/ \
-	--target=${MLFS_TARGET}
+ CROSS_COMPILE=${MLFS_TARGET}- \
+ --prefix=/ \
+ --target=${MLFS_TARGET}
 
 # 2
 make && make DESTDIR=/tools install

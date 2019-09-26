@@ -1,8 +1,8 @@
 # 1 >> enter the chroot.
 chroot \
-	"$MLFS" /tools/bin/env -i			\
-	HOME=/root					\
-	TERM="$TERM"					\
-	PS1='[mlfs chroot] \u:\w\$ '			\
-	PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin	\
-	/tools/bin/bash --login +h
+ "$MLFS" /tools/bin/env -i \
+ HOME=/root \
+ TERM="$TERM" \
+ PS1='[mlfs chroot] \u:\w\% ' \
+ PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin \
+ /tools/bin/bash --login +h

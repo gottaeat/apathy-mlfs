@@ -12,14 +12,14 @@ export STRIP="${MLFS_TARGET}-strip"
 # 1
 mkdir -v build && cd build
 ../configure \
-	--prefix=/tools			\
-	--with-sysroot=$MLFS		\
-	--with-lib-path=/tools/lib	\
-	--build=${MLFS_HOST}		\
-	--host=${MLFS_TARGET}		\
-	--target=${MLFS_TARGET}		\
-	--disable-nls			\
-	--disable-werror
+ --prefix=/tools \
+ --with-sysroot=$MLFS \
+ --with-lib-path=/tools/lib \
+ --build=${MLFS_HOST} \
+ --host=${MLFS_TARGET} \
+ --target=${MLFS_TARGET} \
+ --disable-nls \
+ --disable-werror
 
 # 2
 make

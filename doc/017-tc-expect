@@ -1,4 +1,4 @@
-# tc:		Expect-5.45.3
+# tc:		expect-5.45.3
 # source	https://prdownloads.sourceforge.net/expect/expect5.45.3.tar.gz
 
 # 0
@@ -23,12 +23,12 @@ cp -v configure{,.orig}
 sed 's:/usr/local/bin:/bin:' configure.orig > configure
 
 # 3
-./configure	\
-	--build=${MLFS_HOST}	\
-	--host=${MLFS_TARGET}	\
-	--prefix=/tools		\
-	--with-tcl=/tools/lib	\
-	--with-tclinclude=/tools/include
+./configure \
+ --build=${MLFS_HOST} \
+ --host=${MLFS_TARGET} \
+ --prefix=/tools \
+ --with-tcl=/tools/lib \
+ --with-tclinclude=/tools/include
 
 # 4
 make && make SCRIPTS="" install

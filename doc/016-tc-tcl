@@ -1,4 +1,4 @@
-# tc:	tcl-8.6.9
+# tc:		tcl-8.6.9
 
 # 0
 export CC="${MLFS_TARGET}-gcc"
@@ -11,11 +11,11 @@ export STRIP="${MLFS_TARGET}-strip"
 
 # 1
 cd unix
-ac_cv_func_strtod=yes	\
-tcl_cv_strtod_buggy=1	\
-./configure		\
- --build=${MLFS_HOST}	\
- --host=${MLFS_TARGET}	\
+ac_cv_func_strtod=yes \
+tcl_cv_strtod_buggy=1 \
+./configure \
+ --build=${MLFS_HOST} \
+ --host=${MLFS_TARGET} \
  --prefix=/tools
 
 # 2

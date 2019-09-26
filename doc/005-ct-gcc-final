@@ -2,9 +2,9 @@
 # sauce:	http://ftp.gnu.org/gnu/gcc/gcc-9.2.0/gcc-9.2.0.tar.xz
 
 # 1
-tar -xf "${saucedir}"/mpfr-4.0.2.tar.xz	&& mv -v mpfr-4.0.2 mpfr
-tar -xf "${saucedir}"/gmp-6.1.2.tar.xz	&& mv -v gmp-6.1.2 gmp
-tar -xf "${saucedir}"/mpc-1.1.0.tar.gz	&& mv -v mpc-1.1.0 mpc
+tar -xf "${saucedir}"/mpfr-4.0.2.tar.xz && mv -v mpfr-4.0.2 mpfr
+tar -xf "${saucedir}"/gmp-6.1.2.tar.xz  && mv -v gmp-6.1.2 gmp
+tar -xf "${saucedir}"/mpc-1.1.0.tar.gz  && mv -v mpc-1.1.0 mpc
 
 # 2
 patch -Np0 -i "${patchdir}"/gcc-9.2.0/0010-ldbl128-config.patch
@@ -28,28 +28,28 @@ sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64
 mkdir build && cd  build
 
 # 5
-AR=ar LDFLAGS="-Wl,-rpath,/cross-tools/lib"	\
-../configure					\
-	--prefix=/cross-tools			\
-	--build=${MLFS_HOST}			\
-	--host=${MLFS_HOST}			\
-	--target=${MLFS_TARGET}			\
-	--disable-multilib			\
-	--with-sysroot=/cross-tools		\
-	--disable-nls				\
-	--enable-shared				\
-	--enable-languages=c,c++		\
-	--enable-c99				\
-	--enable-long-long			\
-	--enable-threads=posix			\
-	--enable-clocale=generic		\
-	--enable-libstdcxx-time			\
-	--enable-checking=release		\
-	--enable-fully-dynamic-string		\
-	--disable-symvers			\
-	--disable-libsanitizer			\
-	--disable-lto-plugin			\
-	--disable-libssp 
+AR=ar LDFLAGS="-Wl,-rpath,/cross-tools/lib" \
+../configure \
+ --prefix=/cross-tools \
+ --build=${MLFS_HOST} \
+ --host=${MLFS_HOST} \
+ --target=${MLFS_TARGET} \
+ --disable-multilib \
+ --with-sysroot=/cross-tools \
+ --disable-nls \
+ --enable-shared \
+ --enable-languages=c,c++ \
+ --enable-c99 \
+ --enable-long-long \
+ --enable-threads=posix \
+ --enable-clocale=generic \
+ --enable-libstdcxx-time \
+ --enable-checking=release \
+ --enable-fully-dynamic-string \
+ --disable-symvers \
+ --disable-libsanitizer \
+ --disable-lto-plugin \
+ --disable-libssp 
 
 # 6
 make AS_FOR_TARGET="${MLFS_TARGET}-as" LD_FOR_TARGET="${MLFS_TARGET}-ld"

@@ -30,11 +30,11 @@ sed -i '/test.lock/s/^/#/' gnulib-tests/gnulib.mk
 
 # 5
 ./configure \
-	--build=${MLFS_HOST}			\
-	--host=${MLFS_TARGET}			\
-	--prefix=/tools				\
-	--enable-install-program=hostname	\
-	--cache-file=config.cache 
+ --build=${MLFS_HOST} \
+ --host=${MLFS_TARGET} \
+ --prefix=/tools \
+ --enable-install-program=hostname \
+ --cache-file=config.cache 
 
 # 6
 make && make install
