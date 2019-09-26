@@ -1,19 +1,19 @@
-# Clean up of final system
+# fs:		cleaning up the final system
 
-# While in chroot...
-rm -rvf /tmp/*
+# 1 >> remove temporary files:
+rm -rfv /tmp/*
 exit
 
-# Re-enter chroot:
+# 2 >> reenter chroot:
 export MLFS=/mnt/mlfs
 
-chroot "$MLFS" /usr/bin/env -i          \
-    HOME=/root TERM="$TERM"            \
-    PS1='(Mlfs chroot) \u:\w\$ '        \
-    PATH=/bin:/usr/bin:/sbin:/usr/sbin \
-    /bin/bash --login
+chroot "$MLFS" /usr/bin/env -i \
+ HOME=/root TERM="xterm" \
+ PS1='(Mlfs chroot) \u:\w\$ ' \
+ PATH=/bin:/usr/bin:/sbin:/usr/sbin \
+ /bin/yash --login
 
-# Now remove unecessary files:
+# 3 >> remove unnecessary files:
 rm -fv /usr/lib/lib{bfd,opcodes}.a
 rm -fv /usr/lib/libbz2.a
 rm -fv /usr/lib/lib{com_err,e2p,ext2fs,ss}.a
@@ -22,4 +22,21 @@ rm -fv /usr/lib/libfl.a
 rm -fv /usr/lib/libz.a
 find /usr/lib /usr/libexec -name \*.la -delete
 
-# It is also safe to remove /tools and /cross-tools directories as they're not required anymore
+# 4 >> optionally, remove man, info and docs:
+rm -rfv /usr/share/man
+rm -rfv /usr/share/info
+rm -rfv /usr/share/doc
+rm -rfv /usr/share/bash-completion
+rm -rfv /usr/share/consolefonts/*
+
+# 5 >> is also safe to remove /tools and /cross-tools directories as they're not required anymore
+rm -rfv /tools
+rm -rfv /cross-tools
+
+# 6 >> unlink stuff that doesn't exist anymore
+unlink /bin/bash
+unlink /bin/wget
+
+# 7 >> link wget and man to busybox
+ln -sfv busybox /bin/wget
+ln -sfv busybox /bin/man
