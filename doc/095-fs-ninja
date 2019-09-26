@@ -1,9 +1,7 @@
-# Final System: Ninja 1.9.0
-# Source: https://github.com/ninja-build/ninja/archive/v1.9.0/ninja-1.9.0.tar.gz
-# This section is done in Chroot environment
+# fs:		ninja-1.9.0
+# sauce:	https://github.com/ninja-build/ninja/archive/v1.9.0/ninja-1.9.0.tar.gz
 
-# If desired, add the capability to use the 
-# environment variable NINJAJOBS
+# 1 >> add the capability to use the NINJAJOBS var
 sed -i '/int Guess/a \
   int   j = 0;\
   char* jobs = getenv( "NINJAJOBS" );\
@@ -11,14 +9,11 @@ sed -i '/int Guess/a \
   if ( j > 0 ) return j;\
 ' src/ninja.cc
 
-# Patch for musl support
-patch -Np1 -i ../patches/ninja-1.9.0-void-fix-musl.patch
+# 2 >> patch for musl support
+patch -Np1 -i "${patchdir}"/ninja-1.9.0/ninja-1.9.0-void-fix-musl.patch
 
-# Configure and build source
+# 3
 python3 configure.py --bootstrap
 
-# Install
+# 4
 install -vm755 ninja /usr/bin/
-install -vDm644 misc/bash-completion /usr/share/bash-completion/completions/ninja
-install -vDm644 misc/zsh-completion /usr/share/zsh/site-functions/_ninja
-
