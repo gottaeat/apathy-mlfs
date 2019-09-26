@@ -1,7 +1,22 @@
-# Stripping of Final System
-# This section is done in Chroot environment
+# fs:		stripping
 
+# 1 >> move the debugging symbols to separate files for
+# important libraries like the libc and gcc-libs.
+cd /usr/lib
+
+save_usrlib="libquadmath.so.0.0.0 libstdc++.so.6.0.27 libitm.so.1.0.0 libatomic.so.1.2.0 libc.so"
+
+for LIB in $save_usrlib; do
+ objcopy --only-keep-debug $LIB $LIB.dbg
+ strip --strip-unneeded $LIB
+ objcopy --add-gnu-debuglink=$LIB.dbg $LIB
+done
+
+unset LIB save_usrlib
+
+# 2 >> now the rest can be safely stripped.
 exec /tools/bin/bash
+
 /tools/bin/find /usr/lib -type f -name \*.a \
    -exec /tools/bin/strip --strip-debug {} ';'
 
@@ -10,4 +25,3 @@ exec /tools/bin/bash
 
 /tools/bin/find /{bin,sbin} /usr/{bin,sbin,libexec} -type f \
     -exec /tools/bin/strip --strip-all {} ';'
-
