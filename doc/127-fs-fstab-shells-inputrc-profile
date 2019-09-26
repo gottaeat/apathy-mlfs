@@ -1,0 +1,10 @@
+# fs:		shell configuration
+
+# 1 >> copy the profile, inputrc and shells files
+cp -rv "${filesdir}"/configs/{inputrc,shells,profile} /etc
+
+# 2 >> copy the fstab
+cp -rv "${filesdir}"/configs/fstab /etc
+
+# 3 >> modify the fstab to match your configuration
+vim /etc/fstab
