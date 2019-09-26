@@ -1,9 +1,10 @@
-# Final System: Tar
-# Source: http://ftp.gnu.org/gnu/tar/tar-1.32.tar.xz
-# This section is done in Chroot environment
+# fs:		tar-1.32
 
-FORCE_UNSAFE_CONFIGURE=1  \
-./configure --prefix=/usr  \
-            --bindir=/bin
+# 1
+FORCE_UNSAFE_CONFIGURE=1 \
+./configure \
+ --prefix=/usr \
+ --bindir=/bin
 
+# 2
 make && make install
