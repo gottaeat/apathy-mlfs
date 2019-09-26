@@ -1,0 +1,17 @@
+# fs:		apathy-bootscripts-26_sep_2019.tar.gz
+
+# 0 >> re-export dirs and makeflags since we've changed sessions
+export patchdir="/mss/work/patches"
+export saucedir="/mss/work/sources"
+export filesdir="/mss/work/files"
+
+# 1
+tar -xhzf "${filesdir}"/apathy-bootscripts-26_sep_2019.tar.gz
+
+cp -vr apathy-bootscripts/etc/{init.d,rc.d} /etc
+
+mkdir -pv /lib/{lsb,services}
+cp -vr apathy-bootscripts/lib/lsb/init-functions /lib/lsb
+ln -sfv /lib/lsb/init-functions /lib/services/
+
+cp -vr apathy-bootscripts/sbin/ifcfg /sbin/
