@@ -1,27 +1,32 @@
-# Final System: Python 3.7.3
-# Source: https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tar.xz
-# This section is done in Chroot environment
+# fs:		python-3.7.4
+# sauce:	https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tar.xz
 
-patch -Np1 -i ../patches/Python-3.7.3-libressl_support.patch
-patch -Np1 -i ../patches/Python-3.7.3-alpine-musl-find_library.patch
+# 1
+patch -Np1 -i "${patchdir}"/python-3.7.4/3.7.4-libressl-support.patch
+patch -Np1 -i "${patchdir}"/python-3.7.4/fix-xattrs-glibc.patch
+patch -Np1 -i "${patchdir}"/python-3.7.4/musl-find_library.patch
 
-# Remove to ensure system libraries are used.
-rm -r Modules/expat
-rm -r Modules/_ctypes/{darwin,libffi}*
+# 2 >> remove these to ensure that the system libs are being used
+rm -rv Modules/expat
+rm -rv Modules/_ctypes/{darwin,libffi}*
 
-# Configure source
-./configure --prefix=/usr       \
-            --enable-shared     \
-            --with-system-expat \
-            --with-system-ffi   \
-            --with-ensurepip=yes \
-            --enable-ipv6 \
-            --with-threads
+# 3
+./configure \
+ --prefix=/usr \
+ --enable-shared \
+ --with-system-expat \
+ --with-system-ffi \
+ --with-ensurepip=yes \
+ --disable-ipv6 \
+ --with-threads
 
-# Build and install
-make && make install
+# 4 >> set thread stack size to 1MB so we don't segfault before
+# we hit `sys.getrecursionlimit()`
+make EXTRA_CFLAGS="$CFLAGS -DTHREAD_STACK_SIZE=0x100000"
 
-# Change permissions to allow stripping later
+# 5
+make install
+
+# 6 >> change perms to allow stripping
 chmod -v 755 /usr/lib/libpython3.7m.so
 chmod -v 755 /usr/lib/libpython3.so
-
