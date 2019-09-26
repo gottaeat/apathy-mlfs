@@ -1,11 +1,11 @@
-# Final System: Texinfo
-  Source: http://ftp.gnu.org/gnu/texinfo/texinfo-6.6.tar.xz
-# This section is done in Chroot environment
+# fs:		texinfo-6.6
 
-# Fix a file that creates a lot of failures 
-# in the regression checks: 
+# 1 >> fix a file that creates a lot of failures in
+# the regression checks: 
 sed -i '5481,5485 s/({/(\\{/' tp/Texinfo/Parser.pm
 
+# 2
 ./configure --prefix=/usr --disable-static
 
+# 3
 make && make install
