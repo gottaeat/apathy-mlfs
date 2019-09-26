@@ -1,0 +1,29 @@
+# fs: 		linux-5.2.14
+
+# 1
+make mrproper
+
+# 2
+patch -p1 < "${patchdir}"/linux-5.2.17/5.2-deblob-gnu.patch
+
+# 3 >> you have multiple options when it comes to configuring
+# your kernel. you can either copy an existing config, use
+# `make localmodconfig` to create a config that only has the
+# symbols enabled that your system needs, or just manually
+# configuring it using `make nconfig` or `make menuconfig`.
+#
+# once you figure out a way to configure your system, to build
+# the kernel based on your configuration, do:
+make $(($(nproc)+1))
+
+# 4 >> install modules with:
+make modules_install
+
+# 5 >> copy the kernel image, config and system map with:
+cp -iv arch/x86/boot/bzImage /boot/vmlinuz
+cp -iv System.map /boot/System.map
+cp -iv .config /boot/config
+
+# i >> read this bit to configure your bootloader, grub, which
+# we built earlier for a bios system:
+# https://wiki.archlinux.org/index.php/Grub
