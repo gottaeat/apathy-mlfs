@@ -1,0 +1,17 @@
+#		the end
+
+# 1 >> create a lsb-release file even though we didn't
+# install lsb_release, some programs require it to read
+# information about the system.
+
+cat > /etc/lsb-release << "EOF"
+DISTRIB_ID="apathy-mlfs"
+DISTRIB_RELEASE="1.1"
+DISTRIB_CODENAME="<your name here>"
+DISTRIB_DESCRIPTION="apathy musl linux from scratch"
+EOF
+
+# come into this night
+# when you are able
+# to undo your deeds and
+# atone with your lonely souls
