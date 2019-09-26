@@ -49,3 +49,6 @@ au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 
 colorscheme desert
 EOF
+
+# 7 >> unlink the busybox vi symlink
+unlink /bin/vi
