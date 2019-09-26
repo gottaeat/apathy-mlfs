@@ -1,10 +1,11 @@
-# Final System: Check 0.12.0
-# Source: https://github.com/libcheck/check/releases/download/0.12.0/check-0.12.0.tar.gz
-# This section is done in Chroot environment
+# fs:		check-0.12.0
+# sauce:	https://github.com/libcheck/check/releases/download/0.12.0/check-0.12.0.tar.gz
 
-./configure --prefix=/usr &&
+# 1
+./configure --prefix=/usr
 
+# 2
 make && make install
 
-# Fix a script
+# 3 >> fix a script:
 sed -i '1 s/tools/usr/' /usr/bin/checkmk
