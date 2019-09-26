@@ -1,5 +1,5 @@
-# tc:		findutils-4.7.0
-# sauce:	http://ftp.gnu.org/gnu/findutils/findutils-4.7.0.tar.xz
+# tc:		findutils-4.6.0
+# sauce:	https://ftp.gnu.org/gnu/findutils/findutils-4.6.0.tar.gz
 
 # 0
 export CC="${MLFS_TARGET}-gcc"
