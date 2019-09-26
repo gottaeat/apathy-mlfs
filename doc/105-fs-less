@@ -1,7 +1,11 @@
-# Final System: Less
-# Source: http://www.greenwoodsoftware.com/less/less-551.tar.gz
-# This section is done in Chroot environment
+# fs:		less-551
+# sauce:	http://www.greenwoodsoftware.com/less/less-551.tar.gz
 
-./configure --prefix=/usr --sysconfdir=/etc &&
+# 1
+./configure --prefix=/usr --sysconfdir=/etc
 
+# 2
 make && make install
+
+# 3 >> unlink the busybox less
+unlink /bin/less
