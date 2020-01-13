@@ -1,11 +1,11 @@
-# ct:		linux 5.2.17 headers
-# sauce:	https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.2.17.tar.xz
+# ct:		linux 5.2.14 headers
+# sauce:	https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.2.14.tar.xz
 
 # 1
 make mrproper
 
 # 2
-patch -p1 < "${patchdir}"/linux-5.2.17/5.2-deblob-gnu.patch
+patch -p1 < "${patchdir}"/linux-5.2.14/5.2-deblob-gnu.patch
 
 # 3
 make ARCH=${MLFS_ARCH} headers_check

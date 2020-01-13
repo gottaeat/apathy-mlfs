@@ -4,7 +4,7 @@
 make mrproper
 
 # 2
-patch -p1 < "${patchdir}"/linux-5.2.17/5.2-deblob-gnu.patch
+patch -p1 < "${patchdir}"/linux-5.2.14/5.2-deblob-gnu.patch
 
 # 3 >> you have multiple options when it comes to configuring
 # your kernel. you can either copy an existing config, use
