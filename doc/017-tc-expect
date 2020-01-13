@@ -16,8 +16,8 @@ patch -Np1 -i "${patchdir}"/expect-5.45.3/expect-5.45.3-dont-configure-testsuite
 patch -Np1 -i "${patchdir}"/expect-5.45.3/expect-5.45.3-allow-cross-compile.patch
 
 # 2 >> make configure see the musl-linux triplet
-cp -v ${filesdir}/musl-1.1.23/config.sub-musl tclconfig/config.sub
-cp -v ${filesdir}/musl-1.1.23/config.guess-musl tclconfig/config.guess
+cp -v ${filesdir}/musl-1.1.24/config.sub-musl tclconfig/config.sub
+cp -v ${filesdir}/musl-1.1.24/config.guess-musl tclconfig/config.guess
 
 cp -v configure{,.orig}
 sed 's:/usr/local/bin:/bin:' configure.orig > configure

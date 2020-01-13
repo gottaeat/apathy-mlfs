@@ -1,5 +1,5 @@
-# ct:		musl-1.1.23
-# sauce:	https://www.musl-libc.org/releases/musl-1.1.23.tar.gz
+# ct:		musl-1.1.24
+# sauce:	https://www.musl-libc.org/releases/musl-1.1.24.tar.gz
 
 # 1 >> configure source for cross build
 ./configure \

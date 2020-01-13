@@ -1,14 +1,14 @@
-# fs:		musl-1.1.23
+# fs:		musl-1.1.24
 
 # 1 >> apply a patch to prevent a crash with a null pointer
 # dereference when dcngettext() is called with NULL msgid[12]
 # arguments.
 
-patch -Np0 -i "${patchdir}"/musl-1.1.23/musl-1.1.23-void-mo_lookup.patch
+patch -Np0 -i "${patchdir}"/musl-1.1.24/musl-1.1.24-void-mo_lookup.patch
 
 # 2 >> there is a rounding error that causes fonts to not
 # display for seamonkey and palemoon browsers. fix that with:
-patch -Np1 -i "${patchdir}"/musl-1.1.23/musl-1.1.23-i686-fix-rounding.patch
+patch -Np1 -i "${patchdir}"/musl-1.1.24/musl-1.1.24-i686-fix-rounding.patch
 
 # 3
 ./configure --prefix=/usr -disable-gcc-wrapper
@@ -27,9 +27,9 @@ EOF
 
 # 7 >> rebuild utilities that still asks for the interprete in
 # the toolchain.
-cc -fpie "${filesdir}"/musl-1.1.23/getent.c   -o getent
-cc -fpie "${filesdir}"/musl-1.1.23/getconf.c  -o getconf
-cc -fpie "${filesdir}"/musl-1.1.23/iconv.c    -o iconv
+cc -fpie "${filesdir}"/musl-1.1.24/getent.c   -o getent
+cc -fpie "${filesdir}"/musl-1.1.24/getconf.c  -o getconf
+cc -fpie "${filesdir}"/musl-1.1.24/iconv.c    -o iconv
 
 cp -v getent  /usr/bin/
 cp -v getconf /usr/bin/
@@ -39,6 +39,6 @@ cp -v iconv   /usr/bin/
 ln -s true /usr/bin/ldconfig
 
 # 9 >> install legacy compat headers
-cp -v "${filesdir}"/musl-1.1.23/legacy-compat/cdefs.h /usr/include/sys/
-cp -v "${filesdir}"/musl-1.1.23/legacy-compat/queue.h /usr/include/sys/
-cp -v "${filesdir}"/musl-1.1.23/legacy-compat/tree.h  /usr/include/sys/
+cp -v "${filesdir}"/musl-1.1.24/legacy-compat/cdefs.h /usr/include/sys/
+cp -v "${filesdir}"/musl-1.1.24/legacy-compat/queue.h /usr/include/sys/
+cp -v "${filesdir}"/musl-1.1.24/legacy-compat/tree.h  /usr/include/sys/
