@@ -1,18 +1,21 @@
 ## apathy-mlfs
-apathy-mlfs aims to provide instructions for building a small musl libc using linux install. features as of the time of writing the README are:
- * musl libc 1.1.23
- * libressl 2.9.2
- * gcc 9.2.0 (c,c++)
- * sysvinit-2.96 + sysklogd 1.5.1 (w/ posixly correct self-written init scripts)
- * bash-5.00 (for toolchain)
- * yash-2.48 (for final system)
- * busybox 1.31.0 (for ash at /bin/sh and recovery purposes.)(statically linked, defconfig.)
- * libre kernel, headers and firmware.
+apathy-mlfs aims to provide instructions for building a small linux install utilizing musl libc.
+
+#### features
+ * `musl libc 1.1.24`
+ * `binutils 2.32`
+ * `linux 5.2.14` (libre)
+ * `gcc 9.2.0` (c,c++), can be replaced with the latest `gcc 9.2.1` snapshot.
+ * `isl 0.21`, `mpfr 4.0.2`, `gmp 6.1.2`, `mpc 1.1.0`
+ * statically linked `defconfig` `busybox 1.31.0` for emergency situations and ash.
+ * `libressl 3.0.2`
+ * `sysvinit 2.96`, `sysklogd 1.5.1` (w/ posixly correct self-written init scripts)
+ * `bash 5.00` as `/bin/sh` at toolchain and cross-toolchain steps, for bracket and array support.
+ * `yash 2.49` as final system interactive shells.
+ * `ash` (busybox) as final system `/bin/sh` as it allows configure scripts to execute properly without needing bash.
 
 #### used sources
-*this project is a fork of `dslm4515/Musl-LFS` with moderate changes, rewrites, difference in software of choices and updated packages/patches.*
  * http://www.linuxfromscratch.org
  * https://github.org/dslm4545/Musl-LFS
  * https://voidlinux.org
  * https://alpinelinux.org
- * https://dragora.org
