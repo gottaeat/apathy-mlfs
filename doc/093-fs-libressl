@@ -1,12 +1,20 @@
-# fs:		libressl-2.9.2
-# sauce:	https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.9.2.tar.gz
+# fs:		libressl-3.0.2
+# sauce:	https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.0.2.tar.gz
 
 # 1
-patch -Np0 -i "${patchdir}"/libressl-2.9.2/libressl-2.9.2-void-fail-instead-of-trying-fallback.patch
-patch -Np1 -i "${patchdir}"/libressl-2.9.2/libressl-2.9.2-gentoo-musl.patch
+patch -Np1 -i "${patchdir}"/libressl-3.0.2/s_client-add-options-verify_.patch
+patch -Np1 -i "${patchdir}"/libressl-3.0.2/ssl-libcompat.patch
+patch -Np1 -i "${patchdir}"/libressl-3.0.2/starttls-ldap.patch
 
 # 2
-./config --prefix=/usr --with-openssldir=/etc/ssl
+autoreconf -vif
+
+# 3
+./configure \
+ --prefix=/usr \
+ --sysconfdir=/etc \
+ --mandir=/usr/share/man \
+ --localstatedir=/var
 
 # 3
 make && make install
